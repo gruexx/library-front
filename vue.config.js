@@ -1,0 +1,10 @@
+module.exports = {
+  css: {
+    loaderOptions: {
+      css: {
+        sourceMap: process.env.NODE_ENV !== "production"
+      }
+    }
+  },
+  devServer: { port: 8081 }
+};
