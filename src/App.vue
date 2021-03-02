@@ -1,11 +1,12 @@
 <template>
-  <div id="material-kit">
-    <div :class="{ 'nav-open': NavbarStore.showNavbar }">
-      <router-view name="header" />
-      <div>
-        <router-view />
-      </div>
-      <router-view name="footer" />
-    </div>
+  <div id="nav">
+    <router-link to="/">Login</router-link>
   </div>
+  <router-view />
 </template>
+
+<style>
+#nav a.router-link-exact-active {
+  color: #42b983;
+}
+</style>

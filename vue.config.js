@@ -1,10 +1,15 @@
 module.exports = {
-  css: {
-    loaderOptions: {
-      css: {
-        sourceMap: process.env.NODE_ENV !== "production"
+  devServer: {
+    port: "81",
+    proxy: {
+      "/api": {
+        target: "http://127.0.0.1:8080/",
+        ws: false,
+        changeOrigin: true,
+        pathRewrite: {
+          "^/api": "/"
+        }
       }
     }
-  },
-  devServer: { port: 8081 }
+  }
 };
