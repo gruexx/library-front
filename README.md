@@ -50,6 +50,25 @@ default_type                 application/octet-stream;
 }
 ```
 
+## vue.config.js
+```javascript
+module.exports = {
+  devServer: {
+    port: "81", // 前端端口
+    proxy: {
+      "/api": {
+        target: "http://127.0.0.1:8080/", // 后端地址
+        ws: false,
+        changeOrigin: true, // 是否允许跨域
+        pathRewrite: {
+          "^/api": "/"
+        }
+      }
+    }
+  }
+};
+```
+
 
 ## Project setup
 ```
