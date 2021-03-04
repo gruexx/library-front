@@ -64,6 +64,7 @@
 <script>
 import { request } from "@/network/request";
 import main_bg from "../assets/img/bg2.jpg";
+import store from "@/store";
 
 export default {
   data() {
@@ -128,6 +129,10 @@ export default {
           console.log(res);
           this.code = res.data.code;
           this.msg = res.data.msg;
+          if (res.data.code === "200") {
+            store.commit("setUserInfo", res.config.data);
+            setTimeout(this.to_home, 1500);
+          }
         })
         .catch(err => {
           alert(err);
@@ -138,6 +143,9 @@ export default {
     },
     to_signUp: function() {
       this.$router.push({ name: "SignUp" });
+    },
+    to_home: function() {
+      this.$router.push({ name: "Home" });
     }
   }
 };

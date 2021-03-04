@@ -1,6 +1,6 @@
 # LIBRARY FRONT
 
-## nginx.conf
+## nginx.conf 生产环境
 ```editorconfig
 #user  nobody;
 worker_processes                1;
@@ -50,7 +50,7 @@ default_type                 application/octet-stream;
 }
 ```
 
-## vue.config.js
+## vue.config.js 测试环境
 ```javascript
 module.exports = {
   devServer: {
