@@ -1,7 +1,7 @@
 <template>
   <el-container style="height: 100%">
     <el-menu
-      :default-active="activeIndex2"
+      :default-active="activeIndex"
       class="el-menu-demo"
       mode="horizontal"
       @select="handleSelect"
@@ -17,36 +17,76 @@
     <el-affix :offset="0" style="box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.1);">
       <el-row>
         <el-col :span="6">
-          <div class="grid-content bg-purple">
-            <h1
-              style="margin-left: 20px; color: #53a8ff; float: right; margin-right: 30px"
-            >
-              图书搜索
-            </h1>
-          </div>
+          <h1
+            style="margin-left: 20px; color: #53a8ff; float: right; margin-right: 30px"
+          >
+            图书搜索
+          </h1>
         </el-col>
         <el-col :span="12" style="align-self: center">
-          <div class="grid-content bg-purple-light">
-            <el-autocomplete
-              v-model="search_str"
-              :fetch-suggestions="querySearchAsync"
-              placeholder="请输入内容"
-              @select="handleSelect"
-              :trigger-on-focus="false"
-              style="width: 100%; float: left"
-            >
-              <template #append>
-                <el-button icon="el-icon-search" @click="test"></el-button>
-              </template>
-            </el-autocomplete>
-          </div>
+          <el-autocomplete
+            v-model="search_str"
+            :fetch-suggestions="querySearchAsync"
+            placeholder="请输入内容"
+            @select="handleSelect"
+            :trigger-on-focus="false"
+            style="width: 100%; float: left"
+          >
+            <template #append>
+              <el-button icon="el-icon-search" @click="search"></el-button>
+            </template>
+          </el-autocomplete>
         </el-col>
-        <el-col :span="6">
-          <div class="grid-content bg-purple"></div>
+        <el-col :span="6" style="align-self: center">
+          <div style="padding-left: 20px">
+            <el-radio v-model="search_type" label="1">普通搜索</el-radio>
+            <el-radio v-model="search_type" label="2">关键词搜索</el-radio>
+          </div>
         </el-col>
       </el-row>
     </el-affix>
-    <el-main style="height: 100%">Main</el-main>
+    <el-main>
+      <el-row style="padding-bottom: 20px">
+        <el-col :span="12" :offset="6"
+          ><el-card>
+            <el-space alignment="center">
+              <el-image
+                style="width: 100px; height: 100px;margin-bottom: -8px"
+                src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
+                fit="cover"
+              ></el-image>
+              <div style="padding: 14px;">
+                <span>好吃的汉堡</span>
+                <div class="bottom">
+                  <time class="time">{{ currentDate }}</time>
+                  <el-button type="text" class="button">操作按钮</el-button>
+                </div>
+              </div></el-space
+            >
+          </el-card></el-col
+        >
+      </el-row>
+      <el-row style="padding-bottom: 20px">
+        <el-col :span="12" :offset="6"
+        ><el-card>
+          <el-space alignment="center">
+            <el-image
+              style="width: 100px; height: 100px;margin-bottom: -8px"
+              src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
+              fit="cover"
+            ></el-image>
+            <div style="padding: 14px;">
+              <span>好吃的汉堡</span>
+              <div class="bottom">
+                <time class="time">{{ currentDate }}</time>
+                <el-button type="text" class="button">操作按钮</el-button>
+              </div>
+            </div></el-space
+          >
+        </el-card></el-col
+        >
+      </el-row>
+    </el-main>
     <el-footer style="background: #545c64; height: 30px">Footer</el-footer>
   </el-container>
 </template>
@@ -78,7 +118,7 @@ export default defineComponent({
           clearTimeout(timeout);
           timeout = setTimeout(() => {
             cb(results);
-          }, 500);
+          }, 100);
         })
         .catch(err => {
           alert(err);
@@ -94,12 +134,33 @@ export default defineComponent({
   },
   data() {
     return {
-      search_str: ""
+      search_str: "",
+      activeIndex: "1",
+      search_type: "1"
     };
   },
   methods: {
-    test() {
+    search() {
       console.log(this.search_str);
+      let url = "";
+      if (this.search_type === "1") {
+        url = "/searchBook/searchWithoutKeywords";
+      } else if (this.search_type === "2") {
+        url = "/searchBook/searchByKeywords";
+      }
+      request({
+        url,
+        method: "post",
+        data: {
+          searchList: [this.search_str]
+        }
+      })
+        .then(res => {
+          console.log(res);
+        })
+        .catch(err => {
+          alert(err);
+        });
     }
   }
 });
