@@ -1,5 +1,5 @@
 <template>
-  <el-container>
+  <el-container :style="main_style">
     <el-main>
       <el-row>
         <el-col :span="6" :offset="14">
@@ -9,21 +9,30 @@
             :rules="rules"
             ref="ruleForm"
             label-width="100px"
+            style="margin-top: 100px; margin-right: 30px"
           >
             <el-form-item>
               <h1>注册</h1>
             </el-form-item>
             <el-form-item label="用户名" prop="username">
-              <el-input v-model="ruleForm.username"></el-input>
+              <el-input
+                v-model="ruleForm.username"
+                placeholder="请输入用户名"
+              ></el-input>
             </el-form-item>
             <el-form-item label="邮箱" prop="email">
-              <el-input v-model="ruleForm.email" type="email"></el-input>
+              <el-input
+                v-model="ruleForm.email"
+                placeholder="请输入邮箱"
+                type="email"
+              ></el-input>
             </el-form-item>
             <el-form-item label="密码" prop="pass">
               <el-input
                 type="password"
                 v-model="ruleForm.pass"
                 autocomplete="off"
+                placeholder="请输入密码"
               ></el-input>
             </el-form-item>
             <el-form-item label="确认密码" prop="checkPass">
@@ -31,6 +40,7 @@
                 type="password"
                 v-model="ruleForm.checkPass"
                 autocomplete="off"
+                placeholder="再次输入密码"
               ></el-input>
             </el-form-item>
             <el-alert
@@ -51,7 +61,7 @@
                 type="primary"
                 @click="submitForm('ruleForm')"
                 :loading="signUp_ing"
-                >{{ signUp_ing ? "注册中..." : "提交" }}</el-button
+                >{{ signUp_ing ? "注册中..." : "注册" }}</el-button
               >
               <el-button @click="resetForm('ruleForm')">重置</el-button>
             </el-form-item>
@@ -65,6 +75,7 @@
 
 <script>
 import { request } from "@/network/request";
+import main_bg from "@/assets/img/bg2.jpg";
 
 export default {
   name: "SignUp",
@@ -111,6 +122,10 @@ export default {
       msg: "",
       code: "",
       signUp_ing: false,
+      main_style:
+        "margin-top:15px;height:90%;background: url(" +
+        main_bg +
+        ") no-repeat center; background-size: 100% 100%; border-radius: 15px;",
       ruleForm: {
         pass: "",
         checkPass: "",
