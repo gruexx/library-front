@@ -84,7 +84,12 @@ export default {
       if (!value) {
         return callback(new Error("用户名不能为空"));
       } else {
-        callback();
+        let reg = new RegExp(/@/);
+        if (reg.test(value)) {
+          return callback(new Error("用户名不能含有@"));
+        } else {
+          callback();
+        }
       }
     };
     let checkEmail = (rule, value, callback) => {
