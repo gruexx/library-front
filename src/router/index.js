@@ -3,6 +3,7 @@ import SignIn from "@/views/SignIn";
 import SignUp from "@/views/SignUp";
 import Home from "@/views/Home";
 import store from "@/store";
+import BookDetail from "@/views/components/BookDetail";
 
 const routes = [
   {
@@ -22,7 +23,14 @@ const routes = [
     alias: "/home",
     meta: {
       requiresAuth: true
-    }
+    },
+    children: [
+      {
+        path: "/home/detail",
+        name: "BookDetail",
+        component: BookDetail
+      }
+    ]
   }
 ];
 

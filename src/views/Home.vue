@@ -5,9 +5,9 @@
       class="el-menu-demo"
       mode="horizontal"
       @select="handleSelect"
-      background-color="#545c64"
-      text-color="#fff"
-      active-text-color="#ffd04b"
+      background-color="#545652"
+      text-color="#d5d5d5"
+      active-text-color="#fff"
     >
       <el-menu-item index="1">图书搜索</el-menu-item>
       <el-menu-item index="2">历史记录</el-menu-item>
@@ -17,7 +17,7 @@
       >
     </el-menu>
     <el-affix :offset="0" style="box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.1);">
-      <el-row>
+      <el-row style="background-color: #f6f6f1">
         <el-col :span="6">
           <h1
             style="margin-left: 20px; color: #53a8ff; float: right; margin-right: 30px"
@@ -47,32 +47,40 @@
         </el-col>
       </el-row>
     </el-affix>
-    <el-main>
+    <router-view></router-view>
+    <el-main v-if="$router.currentRoute.value.name !== 'BookDetail'">
       <el-row style="margin-top: 50px" v-if="bookInfo.length === 0">
         <el-col>
           <el-carousel :interval="4000" type="card" height="600px">
             <el-carousel-item v-for="item in home_img" :key="item">
-              <el-image :src="item" fit="fit"></el-image>
+              <el-image :src="item" fit="cover"></el-image>
             </el-carousel-item>
           </el-carousel>
         </el-col>
       </el-row>
-      <el-row v-for="(item, index) in getBookInfo" v-bind:key="index">
+      <el-row
+        v-for="(item, index) in getBookInfo"
+        v-bind:key="index"
+        style="padding-bottom: 25px"
+      >
         <el-col :span="2" :offset="6">
           <el-image
-            style="width: 70px; height: 100px"
+            style="width: 85px; height: 125px"
             :src="get_pic(item.picture)"
-            fit="cover"
+            fit="contain"
           ></el-image>
         </el-col>
         <el-col :span="10">
           <el-space direction="vertical" alignment="flex-start">
-            <el-link type="primary">{{ item.bookname }}</el-link>
-            第{{ item.chapter }}章
-            <div class="text">{{ ellipsis(item.text) }}</div>
+            <el-link class="bookName" href="/#/home/detail">{{
+              item.bookname
+            }}</el-link>
+            <div class="chapter">第{{ item.chapter }}章</div>
+            <div class="text">
+              <span v-html="ellipsis(item.text, item.keyword)"></span>
+            </div>
           </el-space>
         </el-col>
-        <el-divider style="margin: 10px"></el-divider>
       </el-row>
       <el-row>
         <el-col>
@@ -83,14 +91,14 @@
               layout="prev, pager, next"
               :total="bookInfo.length"
               background
-              hide-on-single-page="true"
+              hide-on-single-page
             >
             </el-pagination>
           </div>
         </el-col>
       </el-row>
     </el-main>
-    <el-footer style="background: #545c64; height: 30px; bottom: 0">
+    <el-footer style="background: #545652; height: 30px; bottom: 0">
       <el-row>
         <el-col>
           <div style="text-align: center; font-size: small;padding-top: 5px">
@@ -125,7 +133,7 @@ export default defineComponent({
   setup() {
     let timeout;
     const querySearchAsync = (queryString, cb) => {
-      console.log(queryString.split(/[,\s.;，；]+/));
+      console.log(queryString.split(/[,\s.;，；。]+/));
       let results = [{ value: queryString }];
       let rem = store.getters.getRecommends(queryString);
 
@@ -140,7 +148,7 @@ export default defineComponent({
           url: "/searchBook/recommend",
           method: "post",
           data: {
-            searchList: [queryString]
+            searchList: queryString.split(/[,\s.;，；。]+/)
           }
         })
           .then(res => {
@@ -156,8 +164,6 @@ export default defineComponent({
                 queryStr: queryString,
                 results: results
               });
-            } else {
-              ElMessage.info(res.data.code + " " + res.data.msg);
             }
             clearTimeout(timeout);
             timeout = setTimeout(() => {
@@ -202,11 +208,11 @@ export default defineComponent({
         url,
         method: "post",
         data: {
-          searchList: [this.search_str]
+          searchList: this.search_str.split(/[,\s.;，；。]+/)
         }
       })
         .then(res => {
-          // console.log(res);
+          console.log(res);
           if (res.data.code === "200") {
             if (this.search_type === "1") {
               this.analyse_s1(res.data.result);
@@ -222,12 +228,12 @@ export default defineComponent({
           ElMessage.error("请求超时！");
         });
     },
-    ellipsis(value) {
+    ellipsis(value, keyword) {
       if (!value) return "";
-      if (value.length > 75) {
-        return value.slice(0, 75) + "...";
-      }
-      return value;
+      // if (value.length > 140) {
+      //   return this.highLight(value.slice(0, 140) + "...", keyword);
+      // }
+      return this.highLight(value, keyword);
     },
     analyse_s1() {
       //todo
@@ -242,6 +248,7 @@ export default defineComponent({
           temp.chapter = key;
           temp.text = item[key].text;
           temp.value = item[key].value;
+          temp.keyword = item[key].keyword;
         }
         this.bookInfo.push(temp);
       }
@@ -252,6 +259,20 @@ export default defineComponent({
     },
     sign_out() {
       store.commit("signOut");
+    },
+    highLight(val, keyword) {
+      // console.log("highLight" + keyword);
+      // console.log("highLight" + val);
+      //关键字高亮
+      val = val + "";
+      if (val.indexOf(keyword) !== -1 && keyword !== "") {
+        return val.replace(
+          keyword,
+          `<span style="color:red;">${keyword}</span>`
+        );
+      } else {
+        return val;
+      }
     }
   },
   created() {
@@ -279,4 +300,16 @@ export default defineComponent({
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+.text {
+  font-size: 13px;
+  color: #999;
+}
+.chapter {
+  font-size: 14px;
+}
+.bookName {
+  font-size: 18px;
+  color: #3377aa;
+}
+</style>
