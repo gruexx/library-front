@@ -51,8 +51,10 @@
       <el-row style="margin-top: 50px">
         <el-col>
           <el-carousel :interval="4000" type="card" height="400px">
-            <el-carousel-item v-for="item in 6" :key="item">
-              <h3 class="medium">{{ item }}</h3>
+            <el-carousel-item v-for="item in home_img" :key="item">
+              <h3 class="medium">
+                <el-image :src="item" fit="cover"></el-image>
+              </h3>
             </el-carousel-item>
           </el-carousel>
         </el-col>
@@ -116,6 +118,9 @@ import { defineComponent } from "vue";
 import { request } from "@/network/request";
 import { ElMessage } from "element-plus";
 import store from "@/store";
+import home1 from "../assets/img/home1.jpg";
+import home2 from "../assets/img/home2.jpg";
+import home3 from "../assets/img/home3.jpg";
 
 export default defineComponent({
   setup() {
@@ -164,7 +169,8 @@ export default defineComponent({
       search_str: "",
       activeIndex: "1",
       search_type: "1",
-      bookInfo: []
+      bookInfo: [],
+      home_img: [home1, home2, home3]
     };
   },
   methods: {
