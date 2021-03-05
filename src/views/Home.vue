@@ -59,11 +59,7 @@
           </el-carousel>
         </el-col>
       </el-row>
-      <el-row
-        style="padding-bottom: 20px"
-        v-for="(item, index) in getBookInfo"
-        v-bind:key="index"
-      >
+      <el-row v-for="(item, index) in getBookInfo" v-bind:key="index">
         <el-col :span="2" :offset="6">
           <el-image
             style="width: 70px; height: 100px"
@@ -73,14 +69,12 @@
         </el-col>
         <el-col :span="10">
           <el-space direction="vertical" alignment="flex-start">
-            <span
-              ><el-link>{{ item.bookname }}</el-link></span
-            >
+            <el-link type="primary">{{ item.bookname }}</el-link>
             第{{ item.chapter }}章
             <div class="text">{{ ellipsis(item.text) }}</div>
           </el-space>
         </el-col>
-        <el-divider></el-divider>
+        <el-divider style="margin: 10px"></el-divider>
       </el-row>
       <el-row>
         <el-col>
