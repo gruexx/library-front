@@ -48,7 +48,7 @@
       </el-row>
     </el-affix>
     <el-main>
-      <el-row style="margin-top: 50px">
+      <el-row style="margin-top: 50px" v-if="bookInfo.length === 0">
         <el-col>
           <el-carousel :interval="4000" type="card" height="400px">
             <el-carousel-item v-for="item in home_img" :key="item">
@@ -61,7 +61,7 @@
       </el-row>
       <el-row
         style="padding-bottom: 20px"
-        v-for="(item, index) in bookInfo"
+        v-for="(item, index) in getBookInfo"
         v-bind:key="index"
       >
         <el-col :span="2" :offset="6">
@@ -85,7 +85,14 @@
       <el-row>
         <el-col>
           <div class="block" style="text-align: center">
-            <el-pagination layout="prev, pager, next" :total="150">
+            <el-pagination
+              :page-size="page_size"
+              v-model:current-page="current_page"
+              layout="prev, pager, next"
+              :total="bookInfo.length"
+              background
+              hide-on-single-page="true"
+            >
             </el-pagination>
           </div>
         </el-col>
@@ -126,35 +133,49 @@ export default defineComponent({
   setup() {
     let timeout;
     const querySearchAsync = (queryString, cb) => {
-      request({
-        url: "/searchBook/recommend",
-        method: "post",
-        data: {
-          searchList: [queryString]
-        }
-      })
-        .then(res => {
-          console.log(res);
-          let results = [{ value: queryString }];
-          if (res.data.code === "200") {
-            for (let i = 0; i < 10; i++) {
-              let temp = {};
-              temp.value = res.data.result[i];
-              // console.log(temp);
-              results.push(temp);
-            }
-          } else {
-            ElMessage.info(res.data.code + " " + res.data.msg);
+      let results = [{ value: queryString }];
+      let rem = store.getters.getRecommends(queryString);
+
+      if (rem !== null && rem.length !== 0) {
+        results = rem;
+        clearTimeout(timeout);
+        timeout = setTimeout(() => {
+          cb(results);
+        }, 500);
+      } else {
+        request({
+          url: "/searchBook/recommend",
+          method: "post",
+          data: {
+            searchList: [queryString]
           }
-          clearTimeout(timeout);
-          timeout = setTimeout(() => {
-            cb(results);
-          }, 100);
         })
-        .catch(err => {
-          console.log(err);
-          ElMessage.error("请求超时！");
-        });
+          .then(res => {
+            // console.log(res);
+            if (res.data.code === "200") {
+              for (let i = 0; i < 10; i++) {
+                let temp = {};
+                temp.value = res.data.result[i];
+                // console.log(temp);
+                results.push(temp);
+              }
+              store.commit("setRecommend", {
+                queryStr: queryString,
+                results: results
+              });
+            } else {
+              ElMessage.info(res.data.code + " " + res.data.msg);
+            }
+            clearTimeout(timeout);
+            timeout = setTimeout(() => {
+              cb(results);
+            }, 100);
+          })
+          .catch(err => {
+            console.log(err);
+            ElMessage.error("请求超时！");
+          });
+      }
     };
     const handleSelect = item => {
       console.log(item);
@@ -168,9 +189,11 @@ export default defineComponent({
     return {
       search_str: "",
       activeIndex: "1",
-      search_type: "1",
+      search_type: "2",
       bookInfo: [],
-      home_img: [home1, home2, home3]
+      home_img: [home1, home2, home3],
+      current_page: 1,
+      page_size: 5
     };
   },
   methods: {
@@ -190,7 +213,7 @@ export default defineComponent({
         }
       })
         .then(res => {
-          console.log(res);
+          // console.log(res);
           if (res.data.code === "200") {
             if (this.search_type === "1") {
               this.analyse_s1(res.data.result);
@@ -213,7 +236,9 @@ export default defineComponent({
       }
       return value;
     },
-    analyse_s1() {},
+    analyse_s1() {
+      //todo
+    },
     analyse_s2(data) {
       this.bookInfo = [];
       for (let i = 0; i < data.length; i++) {
@@ -242,6 +267,21 @@ export default defineComponent({
       message: "🤗",
       position: "bottom-left"
     });
+  },
+  computed: {
+    getBookInfo() {
+      let temp = [];
+      let a = (this.current_page - 1) * this.page_size;
+      let b = this.current_page * this.page_size;
+      let c = b;
+      if (b > this.bookInfo.length) {
+        c = this.bookInfo.length;
+      }
+      for (let i = a; i < c; i++) {
+        temp.push(this.bookInfo[i]);
+      }
+      return temp;
+    }
   }
 });
 </script>
