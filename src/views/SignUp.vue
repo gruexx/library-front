@@ -76,6 +76,8 @@
 <script>
 import { request } from "@/network/request";
 import main_bg from "@/assets/img/bg2.jpg";
+import { ElMessage } from "element-plus";
+import store from "@/store";
 
 export default {
   name: "SignUp",
@@ -180,11 +182,18 @@ export default {
           this.msg = res.data.msg;
         })
         .catch(err => {
-          alert(err);
+          console.log(err);
+          ElMessage.error("请求超时！");
         })
         .finally(() => {
           this.signUp_ing = false;
         });
+    }
+  },
+  beforeCreate() {
+    let user = store.getters.userInfo;
+    if (user !== null && user !== undefined) {
+      this.$router.replace({ name: "Home" });
     }
   }
 };

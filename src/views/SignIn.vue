@@ -65,6 +65,7 @@
 import { request } from "@/network/request";
 import main_bg from "../assets/img/bg2.jpg";
 import store from "@/store";
+import { ElMessage } from "element-plus";
 
 export default {
   data() {
@@ -135,7 +136,8 @@ export default {
           }
         })
         .catch(err => {
-          alert(err);
+          console.log(err);
+          ElMessage.error("请求超时！");
         })
         .finally(() => {
           this.signIn_ing = false;
@@ -146,6 +148,12 @@ export default {
     },
     to_home: function() {
       this.$router.push({ name: "Home" });
+    }
+  },
+  beforeCreate() {
+    let user = store.getters.userInfo;
+    if (user !== null && user !== undefined) {
+      this.$router.replace({ name: "Home" });
     }
   }
 };

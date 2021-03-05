@@ -12,7 +12,9 @@
       <el-menu-item index="1">图书搜索</el-menu-item>
       <el-menu-item index="2">历史记录</el-menu-item>
       <el-menu-item index="3">个人信息</el-menu-item>
-      <el-menu-item index="4" style="float: right">退出</el-menu-item>
+      <el-menu-item style="float: right"
+        ><el-link type="danger" @click="sign_out">退出</el-link></el-menu-item
+      >
     </el-menu>
     <el-affix :offset="0" style="box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.1);">
       <el-row>
@@ -55,46 +57,28 @@
           </el-carousel>
         </el-col>
       </el-row>
-
-      <el-row style="padding-bottom: 20px">
-        <el-col :span="12" :offset="6"
-          ><el-card>
-            <el-space alignment="center">
-              <el-image
-                style="width: 100px; height: 100px;margin-bottom: -8px"
-                src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
-                fit="cover"
-              ></el-image>
-              <div style="padding: 14px;">
-                <span>好吃的汉堡</span>
-                <div class="bottom">
-                  <time class="time">{{ currentDate }}</time>
-                  <el-button type="text" class="button">操作按钮</el-button>
-                </div>
-              </div></el-space
+      <el-row
+        style="padding-bottom: 20px"
+        v-for="(item, index) in bookInfo"
+        v-bind:key="index"
+      >
+        <el-col :span="2" :offset="6">
+          <el-image
+            style="width: 70px; height: 100px"
+            :src="get_pic(item.picture)"
+            fit="cover"
+          ></el-image>
+        </el-col>
+        <el-col :span="10">
+          <el-space direction="vertical" alignment="flex-start">
+            <span
+              ><el-link>{{ item.bookname }}</el-link></span
             >
-          </el-card></el-col
-        >
-      </el-row>
-      <el-row style="padding-bottom: 20px">
-        <el-col :span="12" :offset="6"
-          ><el-card>
-            <el-space alignment="center">
-              <el-image
-                style="width: 100px; height: 100px;margin-bottom: -8px"
-                src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
-                fit="cover"
-              ></el-image>
-              <div style="padding: 14px;">
-                <span>好吃的汉堡</span>
-                <div class="bottom">
-                  <time class="time">{{ currentDate }}</time>
-                  <el-button type="text" class="button">操作按钮</el-button>
-                </div>
-              </div></el-space
-            >
-          </el-card></el-col
-        >
+            第{{ item.chapter }}章
+            <div class="text">{{ ellipsis(item.text) }}</div>
+          </el-space>
+        </el-col>
+        <el-divider></el-divider>
       </el-row>
       <el-row>
         <el-col>
@@ -130,6 +114,8 @@
 <script>
 import { defineComponent } from "vue";
 import { request } from "@/network/request";
+import { ElMessage } from "element-plus";
+import store from "@/store";
 
 export default defineComponent({
   setup() {
@@ -145,11 +131,15 @@ export default defineComponent({
         .then(res => {
           console.log(res);
           let results = [{ value: queryString }];
-          for (let i = 0; i < 10; i++) {
-            let temp = {};
-            temp.value = res.data.result[i];
-            console.log(temp);
-            results.push(temp);
+          if (res.data.code === "200") {
+            for (let i = 0; i < 10; i++) {
+              let temp = {};
+              temp.value = res.data.result[i];
+              // console.log(temp);
+              results.push(temp);
+            }
+          } else {
+            ElMessage.info(res.data.code + " " + res.data.msg);
           }
           clearTimeout(timeout);
           timeout = setTimeout(() => {
@@ -157,7 +147,8 @@ export default defineComponent({
           }, 100);
         })
         .catch(err => {
-          alert(err);
+          console.log(err);
+          ElMessage.error("请求超时！");
         });
     };
     const handleSelect = item => {
@@ -172,7 +163,8 @@ export default defineComponent({
     return {
       search_str: "",
       activeIndex: "1",
-      search_type: "1"
+      search_type: "1",
+      bookInfo: []
     };
   },
   methods: {
@@ -193,11 +185,57 @@ export default defineComponent({
       })
         .then(res => {
           console.log(res);
+          if (res.data.code === "200") {
+            if (this.search_type === "1") {
+              this.analyse_s1(res.data.result);
+            } else if (this.search_type === "2") {
+              this.analyse_s2(res.data.result);
+            }
+          } else {
+            ElMessage.error(res.data.code + " " + res.data.msg);
+          }
         })
         .catch(err => {
-          alert(err);
+          console.log(err);
+          ElMessage.error("请求超时！");
         });
+    },
+    ellipsis(value) {
+      if (!value) return "";
+      if (value.length > 75) {
+        return value.slice(0, 75) + "...";
+      }
+      return value;
+    },
+    analyse_s1() {},
+    analyse_s2(data) {
+      this.bookInfo = [];
+      for (let i = 0; i < data.length; i++) {
+        let item = data[i];
+        let temp = {};
+        for (let key in item) {
+          temp = item[key].book;
+          temp.chapter = key;
+          temp.text = item[key].text;
+          temp.value = item[key].value;
+        }
+        this.bookInfo.push(temp);
+      }
+      console.log(this.bookInfo);
+    },
+    get_pic(src) {
+      return "/api/" + src;
+    },
+    sign_out() {
+      store.commit("signOut");
     }
+  },
+  created() {
+    this.$notify({
+      title: "欢迎回来！",
+      message: "🤗",
+      position: "bottom-left"
+    });
   }
 });
 </script>
