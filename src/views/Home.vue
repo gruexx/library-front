@@ -46,6 +46,16 @@
       </el-row>
     </el-affix>
     <el-main>
+      <el-row style="margin-top: 50px">
+        <el-col>
+          <el-carousel :interval="4000" type="card" height="400px">
+            <el-carousel-item v-for="item in 6" :key="item">
+              <h3 class="medium">{{ item }}</h3>
+            </el-carousel-item>
+          </el-carousel>
+        </el-col>
+      </el-row>
+
       <el-row style="padding-bottom: 20px">
         <el-col :span="12" :offset="6"
           ><el-card>
@@ -68,26 +78,52 @@
       </el-row>
       <el-row style="padding-bottom: 20px">
         <el-col :span="12" :offset="6"
-        ><el-card>
-          <el-space alignment="center">
-            <el-image
-              style="width: 100px; height: 100px;margin-bottom: -8px"
-              src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
-              fit="cover"
-            ></el-image>
-            <div style="padding: 14px;">
-              <span>好吃的汉堡</span>
-              <div class="bottom">
-                <time class="time">{{ currentDate }}</time>
-                <el-button type="text" class="button">操作按钮</el-button>
-              </div>
-            </div></el-space
-          >
-        </el-card></el-col
+          ><el-card>
+            <el-space alignment="center">
+              <el-image
+                style="width: 100px; height: 100px;margin-bottom: -8px"
+                src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
+                fit="cover"
+              ></el-image>
+              <div style="padding: 14px;">
+                <span>好吃的汉堡</span>
+                <div class="bottom">
+                  <time class="time">{{ currentDate }}</time>
+                  <el-button type="text" class="button">操作按钮</el-button>
+                </div>
+              </div></el-space
+            >
+          </el-card></el-col
         >
       </el-row>
+      <el-row>
+        <el-col>
+          <div class="block" style="text-align: center">
+            <el-pagination layout="prev, pager, next" :total="150">
+            </el-pagination>
+          </div>
+        </el-col>
+      </el-row>
     </el-main>
-    <el-footer style="background: #545c64; height: 30px">Footer</el-footer>
+    <el-footer style="background: #545c64; height: 30px; bottom: 0">
+      <el-row>
+        <el-col>
+          <div style="text-align: center; font-size: small;padding-top: 5px">
+            <span
+              ><a href="" style="color: #fdfdfd; text-decoration: none"
+                >关于我们</a
+              ></span
+            >
+            <el-divider direction="vertical"></el-divider>
+            <span
+              ><a href="" style="color: #fdfdfd; text-decoration: none"
+                >联系我们</a
+              ></span
+            >
+          </div>
+        </el-col>
+      </el-row>
+    </el-footer>
   </el-container>
 </template>
 
@@ -166,4 +202,20 @@ export default defineComponent({
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+.el-carousel__item h3 {
+  color: #475669;
+  font-size: 14px;
+  opacity: 0.75;
+  line-height: 400px;
+  margin: 0;
+}
+
+.el-carousel__item:nth-child(2n) {
+  background-color: #99a9bf;
+}
+
+.el-carousel__item:nth-child(2n + 1) {
+  background-color: #d3dce6;
+}
+</style>
