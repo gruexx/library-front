@@ -332,7 +332,7 @@ export default defineComponent({
   created() {
     this.$notify({
       title: "欢迎回来！",
-      message: "🤗",
+      message: "🤗🤗",
       position: "bottom-left"
     });
   },
