@@ -153,7 +153,6 @@ export default {
         if (valid) {
           this.sign_up();
         } else {
-          console.log("error submit!!");
           return false;
         }
       });
@@ -177,7 +176,7 @@ export default {
         }
       })
         .then(res => {
-          console.log(res);
+          // console.log(res);
           this.code = res.data.code;
           this.msg = res.data.msg;
         })

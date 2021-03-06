@@ -4,6 +4,7 @@ import SignUp from "@/views/SignUp";
 import Home from "@/views/Home";
 import store from "@/store";
 import BookDetail from "@/views/components/BookDetail";
+import Chapter from "@/views/components/Chapter";
 
 const routes = [
   {
@@ -28,7 +29,14 @@ const routes = [
       {
         path: "/home/detail",
         name: "BookDetail",
-        component: BookDetail
+        component: BookDetail,
+        children: [
+          {
+            path: "/home/detail/chapter",
+            name: "Chapter",
+            component: Chapter
+          }
+        ]
       }
     ]
   }

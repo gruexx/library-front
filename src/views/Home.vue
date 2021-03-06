@@ -48,8 +48,17 @@
       </el-row>
     </el-affix>
     <router-view></router-view>
-    <el-main v-if="$router.currentRoute.value.name !== 'BookDetail'">
-      <el-row style="margin-top: 50px" v-if="bookInfo.length === 0">
+    <el-main
+      v-loading="loading"
+      v-if="
+        $router.currentRoute.value.name !== 'BookDetail' &&
+          $router.currentRoute.value.name !== 'Chapter'
+      "
+    >
+      <el-row
+        style="margin-top: 50px"
+        v-if="bookInfo.length === 0 && com_bookInfo.length === 0"
+      >
         <el-col>
           <el-carousel :interval="4000" type="card" height="600px">
             <el-carousel-item v-for="item in home_img" :key="item">
@@ -72,13 +81,42 @@
         </el-col>
         <el-col :span="10">
           <el-space direction="vertical" alignment="flex-start">
-            <el-link class="bookName" href="/#/home/detail">{{
-              item.bookname
-            }}</el-link>
+            <el-button
+              type="text"
+              class="bookName"
+              @click="to_detail(item.bookId)"
+              >{{ item.bookname }}</el-button
+            >
             <div class="chapter">第{{ item.chapter }}章</div>
             <div class="text">
               <span v-html="ellipsis(item.text, item.keyword)"></span>
             </div>
+          </el-space>
+        </el-col>
+      </el-row>
+      <el-row
+        v-for="(item, index) in getComBookInfo"
+        v-bind:key="index"
+        style="padding-bottom: 25px"
+      >
+        <el-col :span="2" :offset="6">
+          <el-image
+            style="width: 85px; height: 125px"
+            :src="get_pic(item.picture)"
+            fit="contain"
+          ></el-image>
+        </el-col>
+        <el-col :span="10">
+          <el-space direction="vertical" alignment="flex-start">
+            <el-button
+              type="text"
+              class="bookName"
+              @click="to_detail(item.bookId)"
+              >{{ item.bookname }}</el-button
+            >
+            <div class="text">作者：{{ item.author }}</div>
+            <div class="text">出版社：{{ item.pressname }}</div>
+            <div class="text">ISBN：{{ item.isbn }}</div>
           </el-space>
         </el-col>
       </el-row>
@@ -133,7 +171,7 @@ export default defineComponent({
   setup() {
     let timeout;
     const querySearchAsync = (queryString, cb) => {
-      console.log(queryString.split(/[,\s.;，；。]+/));
+      // console.log(queryString.split(/[,\s.;，；。]+/));
       let results = [{ value: queryString }];
       let rem = store.getters.getRecommends(queryString);
 
@@ -190,43 +228,51 @@ export default defineComponent({
       activeIndex: "1",
       search_type: "2",
       bookInfo: [],
+      com_bookInfo: [],
       home_img: [home1, home2, home3],
       current_page: 1,
-      page_size: 5
+      page_size: 5,
+      loading: false
     };
   },
   methods: {
     search() {
-      console.log(this.search_str);
+      // console.log(this.search_str);
+      this.loading = true;
       let url = "";
       if (this.search_type === "1") {
         url = "/searchBook/searchWithoutKeywords";
       } else if (this.search_type === "2") {
         url = "/searchBook/searchByKeywords";
       }
-      request({
-        url,
-        method: "post",
-        data: {
-          searchList: this.search_str.split(/[,\s.;，；。]+/)
-        }
-      })
-        .then(res => {
-          console.log(res);
-          if (res.data.code === "200") {
-            if (this.search_type === "1") {
-              this.analyse_s1(res.data.result);
-            } else if (this.search_type === "2") {
-              this.analyse_s2(res.data.result);
-            }
-          } else {
-            ElMessage.error(res.data.code + " " + res.data.msg);
+      if (url !== "") {
+        request({
+          url,
+          method: "post",
+          data: {
+            searchList: this.search_str.split(/[,\s.;，；。]+/)
           }
         })
-        .catch(err => {
-          console.log(err);
-          ElMessage.error("请求超时！");
-        });
+          .then(res => {
+            // console.log(res);
+            if (res.data.code === "200") {
+              if (this.search_type === "1") {
+                this.analyse_s1(res.data.result);
+              } else if (this.search_type === "2") {
+                this.analyse_s2(res.data.result);
+              }
+            } else if (res.data.code === "400") {
+              ElMessage.error(res.data.code + " " + res.data.msg);
+            }
+          })
+          .catch(err => {
+            console.log(err);
+            ElMessage.error("请求超时！");
+          })
+          .finally(() => {
+            this.loading = false;
+          });
+      }
     },
     ellipsis(value, keyword) {
       if (!value) return "";
@@ -235,11 +281,15 @@ export default defineComponent({
       // }
       return this.highLight(value, keyword);
     },
-    analyse_s1() {
-      //todo
+    analyse_s1(data) {
+      this.bookInfo = [];
+      this.com_bookInfo = [];
+      this.com_bookInfo = data;
     },
     analyse_s2(data) {
+      // console.log(data);
       this.bookInfo = [];
+      this.com_bookInfo = [];
       for (let i = 0; i < data.length; i++) {
         let item = data[i];
         let temp = {};
@@ -252,7 +302,7 @@ export default defineComponent({
         }
         this.bookInfo.push(temp);
       }
-      console.log(this.bookInfo);
+      // console.log(this.bookInfo);
     },
     get_pic(src) {
       return "/api/" + src;
@@ -273,6 +323,10 @@ export default defineComponent({
       } else {
         return val;
       }
+    },
+    to_detail(bookId) {
+      console.log(bookId);
+      this.$router.push({ name: "BookDetail", params: { bookId: bookId } });
     }
   },
   created() {
@@ -293,6 +347,19 @@ export default defineComponent({
       }
       for (let i = a; i < c; i++) {
         temp.push(this.bookInfo[i]);
+      }
+      return temp;
+    },
+    getComBookInfo() {
+      let temp = [];
+      let a = (this.current_page - 1) * this.page_size;
+      let b = this.current_page * this.page_size;
+      let c = b;
+      if (b > this.com_bookInfo.length) {
+        c = this.com_bookInfo.length;
+      }
+      for (let i = a; i < c; i++) {
+        temp.push(this.com_bookInfo[i]);
       }
       return temp;
     }

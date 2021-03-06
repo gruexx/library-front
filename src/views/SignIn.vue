@@ -107,7 +107,6 @@ export default {
         if (valid) {
           this.sign_in();
         } else {
-          console.log("error submit!!");
           return false;
         }
       });
@@ -127,12 +126,16 @@ export default {
         }
       })
         .then(res => {
-          console.log(res);
+          // console.log(res);
           this.code = res.data.code;
           this.msg = res.data.msg;
+          let userInfo = JSON.parse(res.config.data);
+          userInfo.userId = res.data.result;
           if (res.data.code === "200") {
-            store.commit("setUserInfo", res.config.data);
+            store.commit("setUserInfo", userInfo);
             setTimeout(this.to_home, 1500);
+          } else if (res.data.code === "400") {
+            ElMessage.error(res.data.msg);
           }
         })
         .catch(err => {
