@@ -51,8 +51,8 @@
           "
           style="width: 100%"
         >
-          <el-table-column label="章节" prop="chapterName"></el-table-column>
-          <el-table-column>
+          <el-table-column label="章节" prop="chapterName" show-overflow-tooltip="true"></el-table-column>
+          <el-table-column width="200">
             <template #header>
               <el-input
                 v-model="search"
@@ -62,7 +62,7 @@
             </template>
             <template #default="scope">
               <el-button
-                style="text-align: center"
+                style="text-align: center; width: 100%"
                 size="mini"
                 @click="handleEdit(scope)"
                 >阅读本章
@@ -94,8 +94,8 @@
           style="width: 100%"
           :row-class-name="tableRowClassName"
         >
-          <el-table-column prop="username" label="用户名"></el-table-column>
-          <el-table-column prop="comment" label="评论"></el-table-column>
+          <el-table-column prop="username" label="用户名" width="100" show-overflow-tooltip="true"></el-table-column>
+          <el-table-column prop="comment" label="评论" width="477" show-overflow-tooltip="true"></el-table-column>
         </el-table>
       </el-col>
     </el-row>
