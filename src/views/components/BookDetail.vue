@@ -2,15 +2,19 @@
   <router-view></router-view>
   <el-main v-if="$router.currentRoute.value.name !== 'Chapter'">
     <el-row style="padding-top: 30px">
-      <el-col :span="3" :offset="6">
+      <el-col :span="3" :offset="7">
         <el-image
           style=" height: 300px"
           :src="get_pic(book_detail.picture)"
           fit="cover"
         ></el-image>
       </el-col>
-      <el-col :span="9" :offset="1">
-        <el-space direction="vertical" alignment="flex-start">
+      <el-col :span="9" :offset="2">
+        <el-space
+          direction="vertical"
+          alignment="flex-start"
+          style="padding-top: 10px"
+        >
           <div class="bookName">书名：{{ book_detail.bookname }}</div>
           <div class="block">
             <el-rate
@@ -38,13 +42,15 @@
         <div class="tag-left">章节目录 · · · · · ·</div>
       </el-col>
     </el-row>
-    <el-row>
-        <el-col :span="5" :offset="7">
-          <div class="last_time">上次阅读章节: {{ currentChapter.chapterName }}</div>
-        </el-col>
-        <el-col :span="5">
-          <div class="last_time">时间: {{ currentChapter.lastTime }}</div>
-        </el-col>
+    <el-row v-if="currentChapter.chapterName">
+      <el-col :span="5" :offset="7">
+        <div class="last_time">
+          上次阅读章节: {{ currentChapter.chapterName }}
+        </div>
+      </el-col>
+      <el-col :span="5" :offset="2">
+        <div class="last_time">时间: {{ currentChapter.lastTime }}</div>
+      </el-col>
     </el-row>
     <el-row>
       <el-col :span="10" :offset="7">
@@ -59,7 +65,12 @@
           "
           style="width: 100%"
         >
-          <el-table-column label="章节" prop="chapterName" show-overflow-tooltip="true"></el-table-column>
+          <el-table-column
+            label="章节"
+            prop="chapterName"
+            show-overflow-tooltip
+          >
+          </el-table-column>
           <el-table-column width="200">
             <template #header>
               <el-input
@@ -102,8 +113,17 @@
           style="width: 100%"
           :row-class-name="tableRowClassName"
         >
-          <el-table-column prop="username" label="用户名" width="100" show-overflow-tooltip="true"></el-table-column>
-          <el-table-column prop="comment" label="评论" width="477" show-overflow-tooltip="true"></el-table-column>
+          <el-table-column
+            prop="username"
+            label="用户名"
+            width="100"
+            show-overflow-tooltip
+          ></el-table-column>
+          <el-table-column
+            prop="comment"
+            label="评论"
+            show-overflow-tooltip
+          ></el-table-column>
         </el-table>
       </el-col>
     </el-row>
@@ -113,6 +133,8 @@
         :autosize="{ minRows: 2, maxRows: 6 }"
         placeholder="请输入内容"
         v-model="my_comment"
+        maxlength="200"
+        show-word-limit
       >
       </el-input>
       <template #footer>
@@ -162,8 +184,10 @@ export default {
         }
       })
         .then(res => {
-          // console.log(res);
-          if (res.data.code === "400") {
+          console.log(res);
+          if (res.data.code === "200") {
+            this.currentChapter = res.data.result;
+          } else if (res.data.code === "400") {
             ElMessage.error(res.data.msg);
           }
         })
@@ -221,6 +245,7 @@ export default {
         .then(res => {
           // console.log(res);
           if (res.data.code === "200") {
+            ElMessage.success("提交成功！");
             this.get_detail();
           } else if (res.data.code === "400") {
             ElMessage.error(res.data.msg);
@@ -268,10 +293,17 @@ export default {
     }
   },
   created() {
-    // console.log("detail:" + this.$route.params.bookId);
-    // console.log("detail:" + store.state.userInfo.userId);
+    console.log("detail:" + this.$route.params.bookId);
+    console.log("detail:" + store.state.userInfo.userId);
     this.bookId = this.$route.params.bookId;
-    this.userId = store.state.userInfo.userId;
+    this.userId = store.getters.userInfo.userId;
+    if (this.bookId === undefined || this.bookId === null) {
+      this.bookId = store.getters.getCurrentBookId;
+    } else {
+      store.commit("setCurrentBookId", this.bookId);
+    }
+    console.log(this.bookId);
+    console.log(this.userId);
     this.get_detail();
   }
 };

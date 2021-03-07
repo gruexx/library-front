@@ -31,7 +31,7 @@ export default {
   },
   methods: {
     goBack() {
-      this.$router.back();
+      this.$router.push({ name: "BookDetail" });
     },
     read() {
       request({
@@ -44,11 +44,20 @@ export default {
     }
   },
   created() {
-    console.log("Chapter:" + this.$route.params.chapterPath);
-    console.log("Chapter:" + this.$route.params.chapterName);
+    // console.log("Chapter:" + this.$route.params.chapterPath);
+    // console.log("Chapter:" + this.$route.params.chapterName);
     this.chapterPath = this.$route.params.chapterPath;
     this.chapterName = this.$route.params.chapterName;
-    this.read();
+    if (
+      this.chapterPath === undefined ||
+      this.chapterPath === null ||
+      this.chapterName === undefined ||
+      this.chapterName === null
+    ) {
+      this.goBack();
+    } else {
+      this.read();
+    }
   },
   computed: {
     get_text() {
