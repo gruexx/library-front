@@ -35,7 +35,15 @@
     </el-row>
     <el-row>
       <el-col :span="12" :offset="6">
-        <div class="tag-left">目录······</div>
+        <div class="tag-left">章节目录 · · · · · ·</div>
+      </el-col>
+    </el-row>
+    <el-row>
+      <el-col :span="5" :offset="7">
+        <div class="last_time">上次阅读章节: {{ currentChapter.chapterName }}</div>
+      </el-col>
+      <el-col :span="5">
+        <div class="last_time">时间: {{ currentChapter.lastTime }}</div>
       </el-col>
     </el-row>
     <el-row>
@@ -57,7 +65,7 @@
               <el-input
                 v-model="search"
                 size="mini"
-                placeholder="输入关键字搜索"
+                placeholder="输入章节名称搜索"
               />
             </template>
             <template #default="scope">
@@ -79,7 +87,7 @@
     </el-row>
     <el-row>
       <el-col :span="3" :offset="6">
-        <div class="tag-left">短评······</div>
+        <div class="tag-left">短评 · · · · · ·</div>
       </el-col>
       <el-col :span="1" :offset="7">
         <el-button type="warning" icon="el-icon-edit" @click="set_comment"
@@ -129,6 +137,7 @@ export default {
       bookId: null,
       userId: null,
       book_detail: {},
+      currentChapter: {},
       chapters: [],
       comments: [],
       value: 3.7,
@@ -237,6 +246,7 @@ export default {
             this.book_detail = res.data.result.book_detail;
             this.chapters = res.data.result.chapters;
             this.comments = res.data.result.comments;
+            this.currentChapter = res.data.result.currentChapter;
           } else if (res.data.code === "400") {
             ElMessage.error(res.data.msg);
           }
@@ -294,5 +304,10 @@ export default {
 
 .el-table .success-row {
   background: #f0f9eb;
+}
+.last_time {
+  color: #007722;
+  padding-left: 10px;
+  padding-top: 10px;
 }
 </style>
