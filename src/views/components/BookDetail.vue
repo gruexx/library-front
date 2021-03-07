@@ -39,12 +39,12 @@
       </el-col>
     </el-row>
     <el-row>
-      <el-col :span="5" :offset="7">
-        <div class="last_time">上次阅读章节: {{ currentChapter.chapterName }}</div>
-      </el-col>
-      <el-col :span="5">
-        <div class="last_time">时间: {{ currentChapter.lastTime }}</div>
-      </el-col>
+        <el-col :span="5" :offset="7">
+          <div class="last_time">上次阅读章节: {{ currentChapter.chapterName }}</div>
+        </el-col>
+        <el-col :span="5">
+          <div class="last_time">时间: {{ currentChapter.lastTime }}</div>
+        </el-col>
     </el-row>
     <el-row>
       <el-col :span="10" :offset="7">
