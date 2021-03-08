@@ -332,7 +332,8 @@ export default defineComponent({
     this.$notify({
       title: "欢迎回来！",
       message: "🤗🤗",
-      position: "bottom-left"
+      position: "bottom-left",
+      duration: 1500
     });
   },
   computed: {
