@@ -48,7 +48,7 @@ const store = createStore({
       state.userInfo = null;
       localStorage.removeItem("user");
       sessionStorage.removeItem("user");
-      this.$router.push({ name: "SignIn" });
+      window.location.reload();
     },
     setRecommend(state, data) {
       if (sessionStorage.getItem(data.queryStr) === null) {

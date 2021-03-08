@@ -22,7 +22,7 @@
           <div style="text-align: center; font-size: small;padding-top: 5px">
             <span
               ><a
-                href="https://store.steampowered.com/"
+                href="http://www.lzu.edu.cn/"
                 style="color: #fdfdfd; text-decoration: none"
                 >关于我们</a
               ></span
@@ -30,7 +30,7 @@
             <el-divider direction="vertical"></el-divider>
             <span
               ><a
-                href="https://store.steampowered.com/"
+                href="http://www.lzu.edu.cn/"
                 style="color: #fdfdfd; text-decoration: none"
                 >联系我们</a
               ></span

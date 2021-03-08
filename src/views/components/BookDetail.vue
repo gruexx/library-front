@@ -175,6 +175,7 @@
         :xl="{ span: 10, offset: 7 }"
       >
         <el-table
+          max-height="500"
           :data="comments"
           style="width: 100%"
           :row-class-name="tableRowClassName"

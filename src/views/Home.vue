@@ -81,7 +81,7 @@
         :sm="{ span: 4, offset: 2 }"
         :md="{ span: 4, offset: 4 }"
         :lg="{ span: 2, offset: 6 }"
-        :xl="{ span: 4, offset: 8 }"
+        :xl="{ span: 2, offset: 7 }"
       >
         <el-image
           style="width: 85px; height: 125px"
@@ -114,7 +114,7 @@
         :sm="{ span: 4, offset: 2 }"
         :md="{ span: 4, offset: 4 }"
         :lg="{ span: 2, offset: 6 }"
-        :xl="{ span: 4, offset: 8 }"
+        :xl="{ span: 2, offset: 7 }"
       >
         <el-image
           style="width: 85px; height: 125px"
@@ -233,14 +233,20 @@ export default defineComponent({
   methods: {
     search() {
       // console.log(this.search_str);
-      this.loading = true;
       let url = "";
       if (this.search_type === "1") {
         url = "/searchBook/searchWithoutKeywords";
       } else if (this.search_type === "2") {
         url = "/searchBook/searchByKeywords";
       }
-      if (url !== "") {
+      if (this.search_str === "") {
+        ElMessage({
+          message: "请输入搜索内容！",
+          duration: 700,
+          type: "warning"
+        });
+      } else if (url !== "") {
+        this.loading = true;
         request({
           url,
           method: "post",

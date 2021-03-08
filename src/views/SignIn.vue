@@ -40,8 +40,7 @@
             </el-form-item>
             <el-alert
               v-if="code !== ''"
-              :title="code"
-              :description="msg"
+              :title="msg"
               type="info"
               :closable="false"
               show-icon
@@ -97,7 +96,7 @@ export default {
       main_style:
         "margin-top:15px;height:90%;background: url(" +
         main_bg +
-        ") no-repeat center; background-size: 100% 100%; border-radius: 15px;",
+        ") no-repeat center; background-size: cover; border-radius: 15px;",
       ruleForm: {
         userInfo: "",
         password: ""
