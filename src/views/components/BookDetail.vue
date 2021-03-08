@@ -3,7 +3,7 @@
   <el-main v-if="$router.currentRoute.value.name !== 'Chapter'">
     <el-row style="padding-top: 30px">
       <el-col
-        :xs="{ span: 11, offset: 1 }"
+        :xs="{ span: 7, offset: 1 }"
         :sm="{ span: 7, offset: 2 }"
         :md="{ span: 4, offset: 5 }"
         :lg="{ span: 3, offset: 7 }"

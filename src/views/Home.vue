@@ -65,7 +65,7 @@
           class="hidden-md-and-up"
           v-for="item in home_img"
           :key="item"
-          style="width: 100%; height: 300px"
+          style="width: 100%; height: 300px;padding-bottom: 10px"
           :src="item"
           fit="cover"
         ></el-image>
@@ -264,7 +264,12 @@ export default defineComponent({
               }
               this.$router.push({ name: "Home" });
             } else if (res.data.code === "400") {
-              ElMessage.error(res.data.code + " " + res.data.msg);
+              ElMessage({
+                message: res.data.code + " " + res.data.msg,
+                type: "error",
+                duration: 800,
+                showClose: true
+              });
             }
           })
           .catch(err => {
