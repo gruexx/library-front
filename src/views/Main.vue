@@ -64,6 +64,11 @@ export default {
     sign_out() {
       store.commit("signOut");
     }
+  },
+  created() {
+    if (this.$router.currentRoute.value.name === "Main") {
+      this.$router.push({ name: "Home" });
+    }
   }
 };
 </script>
