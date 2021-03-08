@@ -193,10 +193,10 @@
         </el-table>
       </el-col>
     </el-row>
-    <el-dialog title="写短评" v-model="dialogComment" width="30%">
+    <el-dialog title="写短评" v-model="dialogComment" fullscreen>
       <el-input
         type="textarea"
-        :autosize="{ minRows: 2, maxRows: 6 }"
+        :autosize="{ minRows: 8 }"
         placeholder="请输入内容"
         v-model="my_comment"
         maxlength="200"
@@ -228,7 +228,7 @@ export default {
       currentChapter: {},
       chapters: [],
       comments: [],
-      value: 3.7,
+      value: 4.8,
       colors: ["#99A9BF", "#F7BA2A", "#FF9900"],
       search: "",
       my_comment: "",
@@ -288,6 +288,9 @@ export default {
           // console.log(res);
           if (res.data.code === "200") {
             this.my_comment = res.data.result;
+            if (this.my_comment !== "") {
+              ElMessage.info("已显示上一次评论内容");
+            }
           } else if (res.data.code === "400") {
             ElMessage.error(res.data.msg);
           }

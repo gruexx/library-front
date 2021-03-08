@@ -50,7 +50,7 @@ export default {
         url: this.chapterPath,
         method: "get"
       }).then(res => {
-        console.log(res);
+        // console.log(res);
         this.content = res.data;
       });
     }

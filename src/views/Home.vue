@@ -1,21 +1,5 @@
 <template>
-  <el-container style="height: 100%">
-    <el-menu
-      :default-active="activeIndex"
-      class="el-menu-demo"
-      mode="horizontal"
-      @select="handleSelect"
-      background-color="#545652"
-      text-color="#d5d5d5"
-      active-text-color="#fff"
-    >
-      <el-menu-item index="1">图书搜索</el-menu-item>
-      <el-menu-item index="2">历史记录</el-menu-item>
-      <el-menu-item index="3">个人信息</el-menu-item>
-      <el-menu-item style="float: right"
-        ><el-link type="danger" @click="sign_out">退出</el-link></el-menu-item
-      >
-    </el-menu>
+  <div>
     <el-affix :offset="0" style="box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.1);">
       <el-row style="background-color: #f6f6f1">
         <el-col class="hidden-sm-and-down" :span="6">
@@ -64,7 +48,7 @@
       "
     >
       <el-row
-        style="margin-top: 50px"
+        style="margin-top: 20px"
         v-if="bookInfo.length === 0 && com_bookInfo.length === 0"
       >
         <el-col>
@@ -72,12 +56,20 @@
             class="hidden-sm-and-down"
             :interval="4000"
             type="card"
-            height="600px"
+            height="484px"
           >
             <el-carousel-item v-for="item in home_img" :key="item">
               <el-image :src="item" fit="cover"></el-image>
             </el-carousel-item>
           </el-carousel>
+          <el-image
+            class="hidden-md-and-up"
+            v-for="item in home_img"
+            :key="item"
+            style="width: 100%; height: 300px"
+            :src="item"
+            fit="cover"
+          ></el-image>
         </el-col>
       </el-row>
       <el-row
@@ -161,30 +153,7 @@
         </el-col>
       </el-row>
     </el-main>
-    <el-footer style="background: #545652; height: 30px; bottom: 0">
-      <el-row>
-        <el-col>
-          <div style="text-align: center; font-size: small;padding-top: 5px">
-            <span
-              ><a
-                href="https://store.steampowered.com/"
-                style="color: #fdfdfd; text-decoration: none"
-                >关于我们</a
-              ></span
-            >
-            <el-divider direction="vertical"></el-divider>
-            <span
-              ><a
-                href="https://store.steampowered.com/"
-                style="color: #fdfdfd; text-decoration: none"
-                >联系我们</a
-              ></span
-            >
-          </div>
-        </el-col>
-      </el-row>
-    </el-footer>
-  </el-container>
+  </div>
 </template>
 
 <script>
@@ -254,7 +223,6 @@ export default defineComponent({
   data() {
     return {
       search_str: "",
-      activeIndex: "1",
       search_type: "2",
       bookInfo: [],
       com_bookInfo: [],
@@ -290,6 +258,7 @@ export default defineComponent({
               } else if (this.search_type === "2") {
                 this.analyse_s2(res.data.result);
               }
+              this.$router.push({ name: "Home" });
             } else if (res.data.code === "400") {
               ElMessage.error(res.data.code + " " + res.data.msg);
             }
@@ -335,9 +304,6 @@ export default defineComponent({
     },
     get_pic(src) {
       return "/api/" + src;
-    },
-    sign_out() {
-      store.commit("signOut");
     },
     highLight(val, keyword) {
       // console.log("highLight" + keyword);

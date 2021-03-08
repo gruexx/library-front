@@ -5,6 +5,8 @@ import Home from "@/views/Home";
 import store from "@/store";
 import BookDetail from "@/views/components/BookDetail";
 import Chapter from "@/views/components/Chapter";
+import Main from "@/views/Main";
+import PersonalPage from "@/views/PersonalPage";
 
 const routes = [
   {
@@ -19,24 +21,35 @@ const routes = [
   },
   {
     path: "/",
-    name: "Home",
-    component: Home,
-    alias: "/home",
+    name: "Main",
+    component: Main,
     meta: {
       requiresAuth: true
     },
     children: [
       {
-        path: "/home/detail",
-        name: "BookDetail",
-        component: BookDetail,
+        path: "/home",
+        name: "Home",
+        component: Home,
         children: [
           {
-            path: "/home/detail/chapter",
-            name: "Chapter",
-            component: Chapter
+            path: "/home/detail",
+            name: "BookDetail",
+            component: BookDetail,
+            children: [
+              {
+                path: "/home/detail/chapter",
+                name: "Chapter",
+                component: Chapter
+              }
+            ]
           }
         ]
+      },
+      {
+        path: "/personal",
+        name: "PersonalPage",
+        component: PersonalPage
       }
     ]
   }
