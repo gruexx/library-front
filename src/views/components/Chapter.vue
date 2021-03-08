@@ -1,7 +1,13 @@
 <template>
   <el-main class="main_text">
     <el-row>
-      <el-col :span="12" :offset="6">
+      <el-col
+        :xs="{ span: 24, offset: 0 }"
+        :sm="{ span: 20, offset: 2 }"
+        :md="{ span: 16, offset: 4 }"
+        :lg="{ span: 12, offset: 6 }"
+        :xl="{ span: 12, offset: 6 }"
+      >
         <el-page-header
           @back="goBack"
           :content="chapterName"
@@ -10,7 +16,13 @@
       </el-col>
     </el-row>
     <el-row>
-      <el-col :span="12" :offset="6">
+      <el-col
+        :xs="{ span: 24, offset: 0 }"
+        :sm="{ span: 20, offset: 2 }"
+        :md="{ span: 16, offset: 4 }"
+        :lg="{ span: 12, offset: 6 }"
+        :xl="{ span: 12, offset: 6 }"
+      >
         <div class="text">{{ content }}</div>
       </el-col>
     </el-row>

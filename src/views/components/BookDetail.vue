@@ -2,14 +2,26 @@
   <router-view></router-view>
   <el-main v-if="$router.currentRoute.value.name !== 'Chapter'">
     <el-row style="padding-top: 30px">
-      <el-col :span="3" :offset="7">
+      <el-col
+        :xs="{ span: 11, offset: 1 }"
+        :sm="{ span: 7, offset: 2 }"
+        :md="{ span: 4, offset: 5 }"
+        :lg="{ span: 3, offset: 7 }"
+        :xl="{ span: 3, offset: 7 }"
+      >
         <el-image
-          style=" height: 300px"
+          style=" height: 250px"
           :src="get_pic(book_detail.picture)"
-          fit="cover"
+          fit="contain"
         ></el-image>
       </el-col>
-      <el-col :span="9" :offset="2">
+      <el-col
+        :xs="{ span: 11, offset: 1 }"
+        :sm="{ span: 11, offset: 2 }"
+        :md="{ span: 10, offset: 4 }"
+        :lg="{ span: 9, offset: 2 }"
+        :xl="{ span: 9, offset: 2 }"
+      >
         <el-space
           direction="vertical"
           alignment="flex-start"
@@ -33,27 +45,57 @@
       </el-col>
     </el-row>
     <el-row>
-      <el-col :span="12" :offset="6">
+      <el-col
+        :xs="{ span: 24, offset: 0 }"
+        :sm="{ span: 20, offset: 2 }"
+        :md="{ span: 18, offset: 4 }"
+        :lg="{ span: 12, offset: 6 }"
+        :xl="{ span: 12, offset: 6 }"
+      >
         <el-divider></el-divider>
       </el-col>
     </el-row>
     <el-row>
-      <el-col :span="12" :offset="6">
+      <el-col
+        :xs="{ span: 24, offset: 0 }"
+        :sm="{ span: 20, offset: 2 }"
+        :md="{ span: 18, offset: 4 }"
+        :lg="{ span: 12, offset: 6 }"
+        :xl="{ span: 12, offset: 6 }"
+      >
         <div class="tag-left">章节目录 · · · · · ·</div>
       </el-col>
     </el-row>
     <el-row v-if="currentChapter.chapterName">
-      <el-col :span="5" :offset="7">
+      <el-col
+        :xs="{ span: 11, offset: 1 }"
+        :sm="{ span: 9, offset: 3 }"
+        :md="{ span: 7, offset: 5 }"
+        :lg="{ span: 5, offset: 7 }"
+        :xl="{ span: 5, offset: 7 }"
+      >
         <div class="last_time">
           上次阅读章节: {{ currentChapter.chapterName }}
         </div>
       </el-col>
-      <el-col :span="5" :offset="2">
+      <el-col
+        :xs="{ span: 11, offset: 1 }"
+        :sm="{ span: 9, offset: 1 }"
+        :md="{ span: 7, offset: 2 }"
+        :lg="{ span: 5, offset: 2 }"
+        :xl="{ span: 5, offset: 2 }"
+      >
         <div class="last_time">时间: {{ currentChapter.lastTime }}</div>
       </el-col>
     </el-row>
     <el-row>
-      <el-col :span="10" :offset="7">
+      <el-col
+        :xs="{ span: 24, offset: 0 }"
+        :sm="{ span: 20, offset: 2 }"
+        :md="{ span: 16, offset: 4 }"
+        :lg="{ span: 10, offset: 7 }"
+        :xl="{ span: 10, offset: 7 }"
+      >
         <el-table
           max-height="300"
           :data="
@@ -92,22 +134,46 @@
       </el-col>
     </el-row>
     <el-row>
-      <el-col :span="12" :offset="6">
+      <el-col
+        :xs="{ span: 24, offset: 0 }"
+        :sm="{ span: 20, offset: 2 }"
+        :md="{ span: 18, offset: 4 }"
+        :lg="{ span: 12, offset: 6 }"
+        :xl="{ span: 12, offset: 6 }"
+      >
         <el-divider></el-divider>
       </el-col>
     </el-row>
     <el-row>
-      <el-col :span="3" :offset="6">
+      <el-col
+        :xs="{ span: 16, offset: 0 }"
+        :sm="{ span: 12, offset: 2 }"
+        :md="{ span: 8, offset: 4 }"
+        :lg="{ span: 4, offset: 6 }"
+        :xl="{ span: 4, offset: 6 }"
+      >
         <div class="tag-left">短评 · · · · · ·</div>
       </el-col>
-      <el-col :span="1" :offset="7">
+      <el-col
+        :xs="{ span: 8, offset: 0 }"
+        :sm="{ span: 8, offset: 2 }"
+        :md="{ span: 6, offset: 4 }"
+        :lg="{ span: 1, offset: 6 }"
+        :xl="{ span: 1, offset: 6 }"
+      >
         <el-button type="warning" icon="el-icon-edit" @click="set_comment"
           >我来说两句
         </el-button>
       </el-col>
     </el-row>
     <el-row>
-      <el-col :span="10" :offset="7">
+      <el-col
+        :xs="{ span: 24, offset: 0 }"
+        :sm="{ span: 20, offset: 2 }"
+        :md="{ span: 16, offset: 4 }"
+        :lg="{ span: 10, offset: 7 }"
+        :xl="{ span: 10, offset: 7 }"
+      >
         <el-table
           :data="comments"
           style="width: 100%"
@@ -184,7 +250,7 @@ export default {
         }
       })
         .then(res => {
-          console.log(res);
+          // console.log(res);
           if (res.data.code === "200") {
             this.currentChapter = res.data.result;
           } else if (res.data.code === "400") {
@@ -293,8 +359,8 @@ export default {
     }
   },
   created() {
-    console.log("detail:" + this.$route.params.bookId);
-    console.log("detail:" + store.state.userInfo.userId);
+    // console.log("detail:" + this.$route.params.bookId);
+    // console.log("detail:" + store.state.userInfo.userId);
     this.bookId = this.$route.params.bookId;
     this.userId = store.getters.userInfo.userId;
     if (this.bookId === undefined || this.bookId === null) {
@@ -302,8 +368,8 @@ export default {
     } else {
       store.commit("setCurrentBookId", this.bookId);
     }
-    console.log(this.bookId);
-    console.log(this.userId);
+    // console.log(this.bookId);
+    // console.log(this.userId);
     this.get_detail();
   }
 };

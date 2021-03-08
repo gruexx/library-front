@@ -3,7 +3,13 @@
     <el-header></el-header>
     <el-main
       ><el-row>
-        <el-col :span="6" :offset="14">
+        <el-col
+          :xs="24"
+          :sm="{ span: 18, offset: 6 }"
+          :md="{ span: 14, offset: 10 }"
+          :lg="{ span: 8, offset: 14 }"
+          :xl="{ span: 6, offset: 16 }"
+        >
           <el-form
             :model="ruleForm"
             status-icon
@@ -29,6 +35,7 @@
                 show-password
                 clearable
                 placeholder="输入密码"
+                @keyup.enter="submitForm('ruleForm')"
               ></el-input>
             </el-form-item>
             <el-alert
@@ -133,7 +140,8 @@ export default {
           userInfo.userId = res.data.result;
           if (res.data.code === "200") {
             store.commit("setUserInfo", userInfo);
-            setTimeout(this.to_home, 1500);
+            ElMessage.success("登录成功，正在跳转到主页...");
+            setTimeout(this.to_home, 800);
           } else if (res.data.code === "400") {
             ElMessage.error(res.data.msg);
           }

@@ -18,7 +18,7 @@
     </el-menu>
     <el-affix :offset="0" style="box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.1);">
       <el-row style="background-color: #f6f6f1">
-        <el-col :span="6">
+        <el-col class="hidden-sm-and-down" :span="6">
           <h1
             style="margin-left: 20px; color: #53a8ff; float: right; margin-right: 30px"
           >
@@ -32,14 +32,22 @@
             placeholder="请输入内容"
             @select="handleSelect"
             :trigger-on-focus="false"
-            style="width: 100%; float: left"
+            style="width: 100%; float: left;padding: 10px"
+            @keyup.enter="search"
           >
             <template #append>
               <el-button icon="el-icon-search" @click="search"></el-button>
             </template>
           </el-autocomplete>
         </el-col>
-        <el-col :span="6" style="align-self: center">
+        <el-col
+          :xs="12"
+          :sm="12"
+          :md="6"
+          :lg="6"
+          :xl="6"
+          style="align-self: center"
+        >
           <div style="padding-left: 20px">
             <el-radio v-model="search_type" label="1">普通搜索</el-radio>
             <el-radio v-model="search_type" label="2">关键词搜索</el-radio>
@@ -60,7 +68,12 @@
         v-if="bookInfo.length === 0 && com_bookInfo.length === 0"
       >
         <el-col>
-          <el-carousel :interval="4000" type="card" height="600px">
+          <el-carousel
+            class="hidden-sm-and-down"
+            :interval="4000"
+            type="card"
+            height="600px"
+          >
             <el-carousel-item v-for="item in home_img" :key="item">
               <el-image :src="item" fit="cover"></el-image>
             </el-carousel-item>
@@ -72,14 +85,20 @@
         v-bind:key="index"
         style="padding-bottom: 25px"
       >
-        <el-col :span="2" :offset="6">
+        <el-col
+          :xs="{ span: 6, offset: 0 }"
+          :sm="{ span: 4, offset: 2 }"
+          :md="{ span: 4, offset: 4 }"
+          :lg="{ span: 2, offset: 6 }"
+          :xl="{ span: 4, offset: 8 }"
+        >
           <el-image
             style="width: 85px; height: 125px"
             :src="get_pic(item.picture)"
             fit="contain"
           ></el-image>
         </el-col>
-        <el-col :span="10">
+        <el-col :xs="18" :sm="16" :md="12" :lg="10" :xl="8">
           <el-space direction="vertical" alignment="flex-start">
             <el-button
               type="text"
@@ -99,14 +118,20 @@
         v-bind:key="index"
         style="padding-bottom: 25px"
       >
-        <el-col :span="2" :offset="6">
+        <el-col
+          :xs="{ span: 6, offset: 0 }"
+          :sm="{ span: 4, offset: 2 }"
+          :md="{ span: 4, offset: 4 }"
+          :lg="{ span: 2, offset: 6 }"
+          :xl="{ span: 4, offset: 8 }"
+        >
           <el-image
             style="width: 85px; height: 125px"
             :src="get_pic(item.picture)"
             fit="contain"
           ></el-image>
         </el-col>
-        <el-col :span="10">
+        <el-col :xs="18" :sm="16" :md="12" :lg="10" :xl="8">
           <el-space direction="vertical" alignment="flex-start">
             <el-button
               type="text"
@@ -141,13 +166,17 @@
         <el-col>
           <div style="text-align: center; font-size: small;padding-top: 5px">
             <span
-              ><a href="" style="color: #fdfdfd; text-decoration: none"
+              ><a
+                href="https://store.steampowered.com/"
+                style="color: #fdfdfd; text-decoration: none"
                 >关于我们</a
               ></span
             >
             <el-divider direction="vertical"></el-divider>
             <span
-              ><a href="" style="color: #fdfdfd; text-decoration: none"
+              ><a
+                href="https://store.steampowered.com/"
+                style="color: #fdfdfd; text-decoration: none"
                 >联系我们</a
               ></span
             >
@@ -325,7 +354,7 @@ export default defineComponent({
       }
     },
     to_detail(bookId) {
-      console.log(bookId);
+      // console.log(bookId);
       this.$router.push({ name: "BookDetail", params: { bookId: bookId } });
     }
   },

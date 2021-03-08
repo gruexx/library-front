@@ -2,7 +2,13 @@
   <el-container :style="main_style">
     <el-main>
       <el-row>
-        <el-col :span="6" :offset="14">
+        <el-col
+          :xs="24"
+          :sm="{ span: 18, offset: 6 }"
+          :md="{ span: 14, offset: 10 }"
+          :lg="{ span: 8, offset: 14 }"
+          :xl="{ span: 6, offset: 16 }"
+        >
           <el-form
             :model="ruleForm"
             status-icon
