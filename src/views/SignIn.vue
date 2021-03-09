@@ -1,8 +1,26 @@
 <template>
   <el-container :style="main_style">
-    <el-header></el-header>
-    <el-main
-      ><el-row>
+    <vue-particles
+      id="particles-js"
+      color="#4b9fe9"
+      :particleOpacity="0.7"
+      :particlesNumber="60"
+      shapeType="circle"
+      :particleSize="4"
+      linesColor="#b6d9f5"
+      :linesWidth="1"
+      :lineLinked="true"
+      :lineOpacity="0.4"
+      :linesDistance="150"
+      :moveSpeed="3"
+      :hoverEffect="true"
+      hoverMode="grab"
+      :clickEffect="false"
+      clickMode="false"
+    >
+    </vue-particles>
+    <el-main>
+      <el-row>
         <el-col
           :xs="24"
           :sm="{ span: 18, offset: 6 }"
@@ -168,4 +186,10 @@ export default {
 };
 </script>
 
-<style lang="css"></style>
+<style lang="css">
+#particles-js {
+  width: 100%;
+  height: calc(100% - 100px);
+  position: absolute;
+}
+</style>

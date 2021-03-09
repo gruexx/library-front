@@ -1,5 +1,24 @@
 <template>
   <el-container :style="main_style">
+    <vue-particles
+      id="particles-js"
+      color="#4b9fe9"
+      :particleOpacity="0.7"
+      :particlesNumber="60"
+      shapeType="circle"
+      :particleSize="4"
+      linesColor="#b6d9f5"
+      :linesWidth="1"
+      :lineLinked="true"
+      :lineOpacity="0.4"
+      :linesDistance="150"
+      :moveSpeed="3"
+      :hoverEffect="true"
+      hoverMode="grab"
+      :clickEffect="false"
+      clickMode="false"
+    >
+    </vue-particles>
     <el-main>
       <el-row>
         <el-col
@@ -15,7 +34,7 @@
             :rules="rules"
             ref="ruleForm"
             label-width="100px"
-            style="margin-top: 100px; margin-right: 30px"
+            style="margin-top: 10px; margin-right: 30px"
           >
             <el-form-item>
               <h1>注册</h1>
