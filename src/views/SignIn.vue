@@ -63,7 +63,6 @@
         </el-col></el-row
       >
     </el-main>
-    <el-footer style="height: 13%"></el-footer>
   </el-container>
 </template>
 
@@ -94,9 +93,9 @@ export default {
       code: "",
       signIn_ing: false,
       main_style:
-        "margin-top:15px;height:90%;background: url(" +
+        "height:100%;background: url(" +
         main_bg +
-        ") no-repeat center; background-size: cover; border-radius: 15px;",
+        ") no-repeat center; background-size: cover; border-radius: 10px;",
       ruleForm: {
         userInfo: "",
         password: ""

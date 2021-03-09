@@ -15,7 +15,7 @@
           placeholder="请输入内容"
           @select="handleSelect"
           :trigger-on-focus="false"
-          style="width: 100%; float: left;padding: 10px"
+          style="width: 100%; float: left;padding: 17px 10px 18px 10px"
           @keyup.enter="search"
         >
           <template #append>

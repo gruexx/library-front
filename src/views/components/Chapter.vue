@@ -1,20 +1,22 @@
 <template>
   <el-main class="main_text">
-    <el-row>
-      <el-col
-        :xs="{ span: 24, offset: 0 }"
-        :sm="{ span: 20, offset: 2 }"
-        :md="{ span: 16, offset: 4 }"
-        :lg="{ span: 12, offset: 6 }"
-        :xl="{ span: 12, offset: 6 }"
-      >
-        <el-page-header
-          @back="goBack"
-          :content="chapterName"
-          title="返回"
-        ></el-page-header>
-      </el-col>
-    </el-row>
+    <el-affix :offset="111">
+      <el-row class="title">
+        <el-col
+          :xs="{ span: 24, offset: 0 }"
+          :sm="{ span: 20, offset: 2 }"
+          :md="{ span: 16, offset: 4 }"
+          :lg="{ span: 12, offset: 6 }"
+          :xl="{ span: 12, offset: 6 }"
+        >
+          <el-page-header
+            @back="goBack"
+            :content="chapterName"
+            title="返回"
+          ></el-page-header>
+        </el-col>
+      </el-row>
+    </el-affix>
     <el-row>
       <el-col
         :xs="{ span: 24, offset: 0 }"
@@ -81,11 +83,16 @@ export default {
 
 <style scoped>
 .text {
-  padding-top: 20px;
   font-size: 20px;
   line-height: 50px;
 }
 .main_text {
+  background-color: #fffdf3;
+  padding-top: 0;
+}
+.title {
+  height: 66px;
+  padding-top: 20px;
   background-color: #fffdf3;
 }
 </style>

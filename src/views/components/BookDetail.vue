@@ -175,7 +175,7 @@
         :xl="{ span: 10, offset: 7 }"
       >
         <el-table
-          max-height="500"
+          max-height="1000"
           :data="comments"
           style="width: 100%"
           :row-class-name="tableRowClassName"
@@ -268,9 +268,9 @@ export default {
       });
     },
     tableRowClassName({ rowIndex }) {
-      if (rowIndex === 1) {
+      if (rowIndex % 2 === 1) {
         return "warning-row";
-      } else if (rowIndex === 3) {
+      } else if (rowIndex % 2 === 0) {
         return "success-row";
       }
       return "";
