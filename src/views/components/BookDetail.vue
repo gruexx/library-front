@@ -270,8 +270,6 @@ export default {
     tableRowClassName({ rowIndex }) {
       if (rowIndex % 2 === 1) {
         return "warning-row";
-      } else if (rowIndex % 2 === 0) {
-        return "success-row";
       }
       return "";
     },
