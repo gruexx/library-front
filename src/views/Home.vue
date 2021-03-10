@@ -129,7 +129,10 @@
               href="javascript:void(0)"
               >{{ item.bookname }}
             </el-link>
-            <el-link class="chapter" href="javascript:void(0)"
+            <el-link
+              @click="to_chapter"
+              class="chapter"
+              href="javascript:void(0)"
               >第 {{ item.chapter }} 章
             </el-link>
             <div class="text">
@@ -364,6 +367,9 @@ export default {
         this.bookInfo.push(temp);
       }
       // console.log(this.bookInfo);
+    },
+    to_chapter() {
+      //todo
     },
     get_pic(src) {
       return "/api/" + src;
