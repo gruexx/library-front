@@ -3,14 +3,14 @@
   <el-main v-if="$router.currentRoute.value.name !== 'Chapter'">
     <el-row style="padding-top: 30px">
       <el-col
-        :xs="{ span: 7, offset: 1 }"
+        :xs="{ span: 8, offset: 1 }"
         :sm="{ span: 7, offset: 2 }"
         :md="{ span: 4, offset: 5 }"
         :lg="{ span: 3, offset: 7 }"
         :xl="{ span: 3, offset: 7 }"
       >
         <el-image
-          style=" height: 250px"
+          style="max-height: 250px"
           :src="get_pic(book_detail.picture)"
           fit="contain"
         ></el-image>
