@@ -16,7 +16,7 @@
         ></el-image>
       </el-col>
       <el-col
-        :xs="{ span: 11, offset: 1 }"
+        :xs="{ span: 11, offset: 3 }"
         :sm="{ span: 11, offset: 2 }"
         :md="{ span: 10, offset: 4 }"
         :lg="{ span: 9, offset: 2 }"
@@ -27,7 +27,7 @@
           alignment="flex-start"
           style="padding-top: 10px"
         >
-          <div class="bookName">书名：{{ book_detail.bookname }}</div>
+          <div class="bookName">{{ book_detail.bookname }}</div>
           <div class="block">
             <el-rate
               disabled
@@ -241,6 +241,7 @@ export default {
       let chapterId = scope.row.chapterId;
       // let chapterName = scope.row.chapterName;
       let chapterPath = scope.row.chapterPath;
+      // window.open("/api/" + chapterPath);
       window.open("/pdf/web/viewer.html?file=/api/" + chapterPath);
       request({
         url: "/read/readBook",
@@ -406,10 +407,6 @@ export default {
 }
 </style>
 <style>
-.el-rate__icon {
-  font-size: 25px;
-}
-
 .el-table .warning-row {
   background: oldlace;
 }

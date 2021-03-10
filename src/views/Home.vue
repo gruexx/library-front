@@ -73,7 +73,7 @@
         <el-row
           v-for="(item, index) in getAllBookInfo"
           v-bind:key="index"
-          style="padding-bottom: 25px"
+          style="padding-bottom: 0"
         >
           <el-col
             :xs="{ span: 6, offset: 0 }"
@@ -106,7 +106,7 @@
       <el-row
         v-for="(item, index) in getBookInfo"
         v-bind:key="index"
-        style="padding-bottom: 25px"
+        style="padding-bottom: 15px"
       >
         <el-col
           :xs="{ span: 6, offset: 0 }"
@@ -363,6 +363,7 @@ export default {
           temp.text = item[key].text;
           temp.value = item[key].value;
           temp.keyword = item[key].keyword;
+          temp.chapterPath = item[key].chapterPath;
         }
         this.bookInfo.push(temp);
       }
