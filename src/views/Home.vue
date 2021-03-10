@@ -39,123 +39,174 @@
     </el-row>
   </el-affix>
   <router-view></router-view>
-  <el-main
+  <el-container
     v-loading="loading"
     v-if="
       $router.currentRoute.value.name !== 'BookDetail' &&
         $router.currentRoute.value.name !== 'Chapter'
     "
   >
-    <el-row
-      style="margin-top: 20px"
-      v-if="bookInfo.length === 0 && com_bookInfo.length === 0"
-    >
-      <el-col>
-        <el-carousel
-          class="hidden-sm-and-down"
-          :interval="4000"
-          type="card"
-          height="484px"
+    <el-main>
+      <div v-if="bookInfo.length === 0 && com_bookInfo.length === 0">
+        <el-row style="margin-top: 20px">
+          <el-col>
+            <el-carousel
+              class="hidden-sm-and-down"
+              :interval="4000"
+              type="card"
+              height="484px"
+            >
+              <el-carousel-item v-for="item in home_img" :key="item">
+                <el-image :src="item" fit="cover"></el-image>
+              </el-carousel-item>
+            </el-carousel>
+            <el-image
+              class="hidden-md-and-up"
+              v-for="item in home_img"
+              :key="item"
+              style="width: 100%; height: 300px;padding-bottom: 10px"
+              :src="item"
+              fit="cover"
+            ></el-image>
+          </el-col>
+        </el-row>
+        <el-row
+          v-for="(item, index) in getAllBookInfo"
+          v-bind:key="index"
+          style="padding-bottom: 25px"
         >
-          <el-carousel-item v-for="item in home_img" :key="item">
-            <el-image :src="item" fit="cover"></el-image>
-          </el-carousel-item>
-        </el-carousel>
-        <el-image
-          class="hidden-md-and-up"
-          v-for="item in home_img"
-          :key="item"
-          style="width: 100%; height: 300px;padding-bottom: 10px"
-          :src="item"
-          fit="cover"
-        ></el-image>
-      </el-col>
-    </el-row>
-    <el-row
-      v-for="(item, index) in getBookInfo"
-      v-bind:key="index"
-      style="padding-bottom: 25px"
-    >
-      <el-col
-        :xs="{ span: 6, offset: 0 }"
-        :sm="{ span: 4, offset: 2 }"
-        :md="{ span: 4, offset: 4 }"
-        :lg="{ span: 2, offset: 6 }"
-        :xl="{ span: 2, offset: 7 }"
-      >
-        <el-image
-          style="width: 85px; height: 125px"
-          :src="get_pic(item.picture)"
-          fit="contain"
-        ></el-image>
-      </el-col>
-      <el-col :xs="18" :sm="16" :md="12" :lg="10" :xl="8">
-        <el-space direction="vertical" alignment="flex-start">
-          <el-button
-            type="text"
-            class="bookName"
-            @click="to_detail(item.bookId)"
-            >{{ item.bookname }}</el-button
+          <el-col
+            :xs="{ span: 6, offset: 0 }"
+            :sm="{ span: 4, offset: 2 }"
+            :md="{ span: 4, offset: 4 }"
+            :lg="{ span: 2, offset: 6 }"
+            :xl="{ span: 2, offset: 7 }"
           >
-          <div class="chapter">第{{ item.chapter }}章</div>
-          <div class="text">
-            <span v-html="ellipsis(item.text, item.keyword)"></span>
+            <el-image
+              style="width: 85px; height: 125px"
+              :src="get_pic(item.picture)"
+              fit="contain"
+            ></el-image>
+          </el-col>
+          <el-col :xs="18" :sm="16" :md="12" :lg="10" :xl="8">
+            <el-space direction="vertical" alignment="flex-start">
+              <el-button
+                type="text"
+                class="bookName"
+                @click="to_detail(item.bookId)"
+                >{{ item.bookname }}</el-button
+              >
+              <div class="text">作者：{{ item.author }}</div>
+              <div class="text">出版社：{{ item.pressname }}</div>
+              <div class="text">ISBN：{{ item.isbn }}</div>
+            </el-space>
+          </el-col>
+        </el-row>
+      </div>
+      <el-row
+        v-for="(item, index) in getBookInfo"
+        v-bind:key="index"
+        style="padding-bottom: 25px"
+      >
+        <el-col
+          :xs="{ span: 6, offset: 0 }"
+          :sm="{ span: 4, offset: 2 }"
+          :md="{ span: 4, offset: 4 }"
+          :lg="{ span: 3, offset: 8 }"
+          :xl="{ span: 3, offset: 8 }"
+        >
+          <el-image
+            style="width: 85px; height: 125px"
+            :src="get_pic(item.picture)"
+            fit="contain"
+          ></el-image>
+        </el-col>
+        <el-col :xs="18" :sm="16" :md="12" :lg="13" :xl="13">
+          <el-space direction="vertical" alignment="flex-start">
+            <el-link
+              class="bookName"
+              @click="to_detail(item.bookId)"
+              href="javascript:void(0)"
+              >{{ item.bookname }}
+            </el-link>
+            <el-link class="chapter" href="javascript:void(0)"
+              >第 {{ item.chapter }} 章
+            </el-link>
+            <div class="text">
+              <span v-html="ellipsis(item.text, item.keyword)"></span>
+            </div>
+          </el-space>
+        </el-col>
+      </el-row>
+      <el-row
+        v-for="(item, index) in getComBookInfo"
+        v-bind:key="index"
+        style="padding-bottom: 25px"
+      >
+        <el-col
+          :xs="{ span: 6, offset: 0 }"
+          :sm="{ span: 4, offset: 2 }"
+          :md="{ span: 4, offset: 4 }"
+          :lg="{ span: 3, offset: 8 }"
+          :xl="{ span: 3, offset: 8 }"
+        >
+          <el-image
+            style="width: 85px; height: 125px"
+            :src="get_pic(item.picture)"
+            fit="contain"
+          ></el-image>
+        </el-col>
+        <el-col :xs="18" :sm="16" :md="12" :lg="13" :xl="13">
+          <el-space direction="vertical" alignment="flex-start">
+            <el-link
+              class="bookName"
+              @click="to_detail(item.bookId)"
+              href="javascript:void(0)"
+              >{{ item.bookname }}
+            </el-link>
+            <div class="text">作者：{{ item.author }}</div>
+            <div class="text">出版社：{{ item.pressname }}</div>
+            <div class="text">ISBN：{{ item.isbn }}</div>
+          </el-space>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :lg="{ span: 16, offset: 8 }" :xl="{ span: 16, offset: 8 }">
+          <div class="block" style="text-align: center">
+            <el-pagination
+              :page-size="page_size"
+              v-model:current-page="current_page"
+              layout="prev, pager, next"
+              :total="bookInfo.length"
+              background
+              hide-on-single-page
+            >
+            </el-pagination>
           </div>
-        </el-space>
-      </el-col>
-    </el-row>
-    <el-row
-      v-for="(item, index) in getComBookInfo"
-      v-bind:key="index"
-      style="padding-bottom: 25px"
+        </el-col>
+      </el-row>
+    </el-main>
+    <el-aside
+      width="25%"
+      v-if="bookInfo.length !== 0 || com_bookInfo.length !== 0"
+      style="padding: 40px"
+      class="hidden-md-and-down"
     >
-      <el-col
-        :xs="{ span: 6, offset: 0 }"
-        :sm="{ span: 4, offset: 2 }"
-        :md="{ span: 4, offset: 4 }"
-        :lg="{ span: 2, offset: 6 }"
-        :xl="{ span: 2, offset: 7 }"
-      >
-        <el-image
-          style="width: 85px; height: 125px"
-          :src="get_pic(item.picture)"
-          fit="contain"
-        ></el-image>
-      </el-col>
-      <el-col :xs="18" :sm="16" :md="12" :lg="10" :xl="8">
-        <el-space direction="vertical" alignment="flex-start">
-          <el-button
-            type="text"
-            class="bookName"
-            @click="to_detail(item.bookId)"
-            >{{ item.bookname }}</el-button
-          >
-          <div class="text">作者：{{ item.author }}</div>
-          <div class="text">出版社：{{ item.pressname }}</div>
-          <div class="text">ISBN：{{ item.isbn }}</div>
-        </el-space>
-      </el-col>
-    </el-row>
-    <el-row>
-      <el-col>
-        <div class="block" style="text-align: center">
-          <el-pagination
-            :page-size="page_size"
-            v-model:current-page="current_page"
-            layout="prev, pager, next"
-            :total="bookInfo.length"
-            background
-            hide-on-single-page
-          >
-          </el-pagination>
-        </div>
-      </el-col>
-    </el-row>
-  </el-main>
+      <h1>相关搜索</h1>
+      <el-space direction="vertical" alignment="flex-start">
+        <a
+          href="javascript:void(0)"
+          @click="get_search(item)"
+          v-for="item in results"
+          :key="item"
+          >{{ item.value }}
+        </a>
+      </el-space>
+    </el-aside>
+  </el-container>
 </template>
 
 <script>
-import { defineComponent } from "vue";
 import { request } from "@/network/request";
 import { ElMessage } from "element-plus";
 import store from "@/store";
@@ -163,19 +214,37 @@ import home1 from "../assets/img/home1.jpg";
 import home2 from "../assets/img/home2.jpg";
 import home3 from "../assets/img/home3.jpg";
 
-export default defineComponent({
-  setup() {
-    let timeout;
-    const querySearchAsync = (queryString, cb) => {
+export default {
+  data() {
+    return {
+      search_str: "",
+      search_type: "2",
+      bookInfo: [],
+      com_bookInfo: [],
+      all_bookInfo: [],
+      home_img: [home1, home2, home3],
+      current_page: 1,
+      page_size: 5,
+      loading: false,
+      timeout: null,
+      results: []
+    };
+  },
+  methods: {
+    handleSelect(item) {
+      console.log(item);
+      this.search();
+    },
+    querySearchAsync(queryString, cb) {
       // console.log(queryString.split(/[,\s.;，；。]+/));
-      let results = [{ value: queryString }];
+      this.results = [{ value: queryString }];
       let rem = store.getters.getRecommends(queryString);
 
       if (rem !== null && rem.length !== 0) {
-        results = rem;
-        clearTimeout(timeout);
-        timeout = setTimeout(() => {
-          cb(results);
+        this.results = rem;
+        clearTimeout(this.timeout);
+        this.timeout = setTimeout(() => {
+          cb(this.results);
         }, 500);
       } else {
         request({
@@ -192,16 +261,16 @@ export default defineComponent({
                 let temp = {};
                 temp.value = res.data.result[i];
                 // console.log(temp);
-                results.push(temp);
+                this.results.push(temp);
               }
               store.commit("setRecommend", {
                 queryStr: queryString,
-                results: results
+                results: this.results
               });
             }
-            clearTimeout(timeout);
-            timeout = setTimeout(() => {
-              cb(results);
+            clearTimeout(this.timeout);
+            this.timeout = setTimeout(() => {
+              cb(this.results);
             }, 100);
           })
           .catch(err => {
@@ -209,28 +278,13 @@ export default defineComponent({
             ElMessage.error("请求超时！");
           });
       }
-    };
-    const handleSelect = item => {
+    },
+    get_search(item) {
       console.log(item);
-    };
-    return {
-      querySearchAsync,
-      handleSelect
-    };
-  },
-  data() {
-    return {
-      search_str: "",
-      search_type: "2",
-      bookInfo: [],
-      com_bookInfo: [],
-      home_img: [home1, home2, home3],
-      current_page: 1,
-      page_size: 5,
-      loading: false
-    };
-  },
-  methods: {
+      this.search_str = item.value;
+      this.search_type = "2";
+      this.search();
+    },
     search() {
       // console.log(this.search_str);
       let url = "";
@@ -340,6 +394,22 @@ export default defineComponent({
       position: "bottom-left",
       duration: 1500
     });
+    request({
+      url: "/read/getAllBooks",
+      method: "post"
+    })
+      .then(res => {
+        console.log(res);
+        if (res.data.code === "200") {
+          this.all_bookInfo = res.data.result;
+        } else if (res.data.code === "400") {
+          ElMessage.error(res.data.msg);
+        }
+      })
+      .catch(err => {
+        console.log(err);
+        ElMessage.error("请求超时！");
+      });
   },
   computed: {
     getBookInfo() {
@@ -367,9 +437,22 @@ export default defineComponent({
         temp.push(this.com_bookInfo[i]);
       }
       return temp;
+    },
+    getAllBookInfo() {
+      let temp = [];
+      let a = (this.current_page - 1) * this.page_size;
+      let b = this.current_page * this.page_size;
+      let c = b;
+      if (b > this.all_bookInfo.length) {
+        c = this.all_bookInfo.length;
+      }
+      for (let i = a; i < c; i++) {
+        temp.push(this.all_bookInfo[i]);
+      }
+      return temp;
     }
   }
-});
+};
 </script>
 
 <style scoped>
@@ -379,6 +462,7 @@ export default defineComponent({
 }
 .chapter {
   font-size: 14px;
+  color: #5d93c4;
 }
 .bookName {
   font-size: 18px;

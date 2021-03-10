@@ -33,6 +33,15 @@ const store = createStore({
       } else {
         return state.currentBookId;
       }
+    },
+    getBookInfo: () => {
+      return function(bookId) {
+        if (sessionStorage.getItem("bookInfo_" + bookId) !== null) {
+          return JSON.parse(sessionStorage.getItem("bookInfo_" + bookId));
+        } else {
+          return null;
+        }
+      };
     }
   },
   mutations: {
@@ -58,6 +67,12 @@ const store = createStore({
     setCurrentBookId(state, bookId) {
       state.currentBookId = bookId;
       sessionStorage.setItem("currentBookId", bookId);
+    },
+    setBookInfo(state, data) {
+      sessionStorage.setItem(
+        "bookInfo_" + data.bookId,
+        JSON.stringify(data.book_detail)
+      );
     }
   },
   actions: {},

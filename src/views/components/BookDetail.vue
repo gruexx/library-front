@@ -336,10 +336,11 @@ export default {
         .then(res => {
           // console.log(res);
           if (res.data.code === "200") {
-            this.book_detail = res.data.result.book_detail;
-            this.chapters = res.data.result.chapters;
-            this.comments = res.data.result.comments;
-            this.currentChapter = res.data.result.currentChapter;
+            store.commit("setBookInfo", {
+              bookId: this.bookId,
+              book_detail: res.data.result
+            });
+            this.analyse_detail(res.data.result);
           } else if (res.data.code === "400") {
             ElMessage.error(res.data.msg);
           }
@@ -348,6 +349,12 @@ export default {
           console.log(err);
           ElMessage.error("请求超时！");
         });
+    },
+    analyse_detail(data) {
+      this.book_detail = data.book_detail;
+      this.chapters = data.chapters;
+      this.comments = data.comments;
+      this.currentChapter = data.currentChapter;
     }
   },
   computed: {
@@ -372,7 +379,11 @@ export default {
     }
     // console.log(this.bookId);
     // console.log(this.userId);
-    this.get_detail();
+    if (store.getters.getBookInfo(this.bookId) !== null) {
+      this.analyse_detail(store.getters.getBookInfo(this.bookId));
+    } else {
+      this.get_detail();
+    }
   }
 };
 </script>
