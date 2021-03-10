@@ -239,8 +239,9 @@ export default {
   methods: {
     handleEdit(scope) {
       let chapterId = scope.row.chapterId;
-      let chapterName = scope.row.chapterName;
+      // let chapterName = scope.row.chapterName;
       let chapterPath = scope.row.chapterPath;
+      window.open("/pdf/web/viewer.html?file=/api/" + chapterPath);
       request({
         url: "/read/readBook",
         method: "post",
@@ -262,10 +263,10 @@ export default {
           console.log(err);
           ElMessage.error("请求超时！");
         });
-      this.$router.push({
-        name: "Chapter",
-        params: { chapterPath: chapterPath, chapterName: chapterName }
-      });
+      // this.$router.push({
+      //   name: "Chapter",
+      //   params: { chapterPath: chapterPath, chapterName: chapterName }
+      // });
     },
     tableRowClassName({ rowIndex }) {
       if (rowIndex % 2 === 1) {

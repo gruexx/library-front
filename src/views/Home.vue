@@ -370,6 +370,7 @@ export default {
     },
     to_chapter() {
       //todo
+      console.log("届不到！！！");
     },
     get_pic(src) {
       return "/api/" + src;
