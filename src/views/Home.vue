@@ -224,7 +224,7 @@
         :md="6"
         :lg="6"
         :xl="6"
-        v-if="bookInfo.length !== 0 || com_bookInfo.length !== 0"
+        v-if="bookInfo.length !== 0 && results.length > 1"
         style="margin-top: 0;padding-left: 100px"
         class="hidden-md-and-down"
       >
