@@ -234,7 +234,7 @@
             type="primary"
             href="javascript:void(0)"
             @click="get_search(item)"
-            v-for="item in results"
+            v-for="item in results.slice(0, 10)"
             :key="item"
             :disabled="false"
           >
