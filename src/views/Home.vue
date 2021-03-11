@@ -324,6 +324,25 @@ export default {
       this.search_str = item.value;
       this.search_type = "2";
       this.search();
+      let queryString = this.search_str;
+      this.results = [{ value: queryString }];
+
+      request({
+        url: "/searchBook/recommend",
+        method: "post",
+        data: {
+          searchList: queryString.split(/[,\s.;，；。]+/)
+        }
+      }).then(res => {
+        // console.log(res);
+        if (res.data.code === "200") {
+          for (let i = 0; i < 10; i++) {
+            let temp = {};
+            temp.value = res.data.result[i];
+            this.results.push(temp);
+          }
+        }
+      });
     },
     search() {
       // console.log(this.search_str);
