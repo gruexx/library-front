@@ -3,7 +3,8 @@
     <el-row style="background-color: #f6f6f1">
       <el-col class="hidden-sm-and-down" :span="6">
         <h1
-          style="margin-left: 20px; color: #53a8ff; float: right; margin-right: 30px"
+          style="margin-left: 20px; color: #53a8ff; float: right; margin-right: 30px;cursor: pointer"
+          @click="returnTo"
         >
           图书搜索
         </h1>
@@ -449,6 +450,12 @@ export default {
     to_detail(bookId) {
       // console.log(bookId);
       this.$router.push({ name: "BookDetail", params: { bookId: bookId } });
+    },
+    returnTo() {
+      console.log("click");
+      this.$router.push({ name: "Home" });
+      this.bookInfo = [];
+      this.com_bookInfo = [];
     }
   },
   created() {
