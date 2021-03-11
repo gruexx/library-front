@@ -234,7 +234,7 @@
             type="primary"
             href="javascript:void(0)"
             @click="get_search(item)"
-            v-for="item in results.slice(0, 10)"
+            v-for="item in results.slice(1, 11)"
             :key="item"
             :disabled="false"
           >
@@ -543,6 +543,11 @@ export default {
     }
   }
 };
+//防止页面后退
+history.pushState(null, null, document.URL);
+window.addEventListener("popstate", function() {
+  history.pushState(null, null, document.URL);
+});
 </script>
 
 <style scoped>

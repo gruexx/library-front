@@ -4,15 +4,16 @@
       :default-active="activeIndex"
       class="el-menu-demo"
       mode="horizontal"
-      @select="getCurrentIndex"
       background-color="#545652"
       text-color="#d5d5d5"
       active-text-color="#fff"
     >
-      <el-menu-item index="home">图书搜索</el-menu-item>
-      <el-menu-item index="person">个人信息</el-menu-item>
-      <el-menu-item style="float: right"
-        ><el-link type="danger" @click="sign_out">退出</el-link></el-menu-item
+      <el-menu-item @click="goHome"
+        ><el-link type="danger">首页</el-link></el-menu-item
+      >
+      <el-menu-item index="person" @click="goPerson">个人信息</el-menu-item>
+      <el-menu-item style="float: right" @click="sign_out"
+        ><el-link>退出</el-link></el-menu-item
       >
     </el-menu>
     <router-view />
@@ -53,16 +54,22 @@ export default {
     };
   },
   methods: {
-    getCurrentIndex(item) {
-      // console.log("Main index:" + item);
-      if (item === "home") {
-        this.$router.push({ name: "Home" });
-      } else if (item === "person") {
-        this.$router.push({ name: "PersonalPage" });
-      }
-    },
+    // getCurrentIndex(item) {
+    //   // console.log("Main index:" + item);
+    //   if (item === "home") {
+    //     this.$router.push({ name: "Home" });
+    //   } else if (item === "person") {
+    //     this.$router.push({ name: "PersonalPage" });
+    //   }
+    // },
     sign_out() {
       store.commit("signOut");
+    },
+    goHome() {
+      this.$router.push({ name: "Home" });
+    },
+    goPerson() {
+      this.$router.push({ name: "PersonalPage" });
     }
   },
   created() {
@@ -76,6 +83,6 @@ export default {
 <style scoped>
 .el-menu--horizontal > .el-menu-item {
   height: 35px;
-  line-height: 35px;
+  line-height: 40px;
 }
 </style>
