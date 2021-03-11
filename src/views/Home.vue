@@ -54,7 +54,7 @@
     "
   >
     <el-row
-      ><el-col :xs="24" :sm="24" :md="24" :lg="18" :xl="18">
+      ><el-col :xs="24" :sm="18" :md="18" :lg="18" :xl="18">
         <div v-if="bookInfo.length === 0 && com_bookInfo.length === 0">
           <!--        <el-row style="margin-top: 20px">-->
           <!--          <el-col>-->
@@ -155,7 +155,7 @@
                 "
                 class="chapter"
                 href="javascript:void(0)"
-                >{{ item.chapterName }}
+                >章节：{{ item.chapterName }}
               </el-link>
               <div class="text">
                 <span v-html="ellipsis(item.text, item.keyword)"></span>
@@ -219,23 +219,26 @@
       </el-col>
       <el-col
         :xs="0"
-        :sm="0"
-        :md="0"
+        :sm="6"
+        :md="6"
         :lg="6"
         :xl="6"
         v-if="bookInfo.length !== 0 || com_bookInfo.length !== 0"
-        style="padding-top: 40px;padding-left: 50px"
+        style="margin-top: 0;padding-left: 100px"
         class="hidden-md-and-down"
       >
         <h1>相关搜索</h1>
         <el-space direction="vertical" alignment="flex-start">
-          <a
+          <el-link
+            type="primary"
             href="javascript:void(0)"
             @click="get_search(item)"
             v-for="item in results"
             :key="item"
-            >{{ item.value }}
-          </a>
+            :disabled="false"
+          >
+            {{ item.value }}
+          </el-link>
         </el-space>
       </el-col>
     </el-row>
